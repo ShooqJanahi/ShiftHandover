@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -17,9 +17,7 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
-}
+
 
 .row.content {
     height: 550px;
@@ -34,4 +32,201 @@ body {
     .row.content {
         height: auto;
     }
+}
+
+
+/*Added Style*/
+html, body {
+    
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* only body stretches, not the footer */
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex-shrink: 0;
+    background-color: #ffffff; /* <-- pure white background */
+    text-align: center;
+    padding: 3px 0; /* Small padding */
+    font-size: 14px;
+    color: #6c757d; /* Footer text color */
+    border-top: 1px solid #ddd; /* Thin top border */
+}
+
+
+
+
+
+
+
+
+.navbar-default {
+    background-color: #A30020;
+    border: none;
+}
+
+    .navbar-default .navbar-nav > li > a {
+        color: white;
+        font-weight: 500;
+    }
+
+    .navbar-default .navbar-brand {
+        color: white;
+        font-weight: bold;
+    }
+
+.btn-logout {
+    background-color: #002244;
+    color: white;
+}
+
+    .btn-logout:hover {
+        background-color: #001122;
+    }
+
+
+/* Shift Panel Styles */
+.sidenav h2 {
+    color: black; /* Keep title black */
+    margin-bottom: 20px;
+}
+
+.sidenav .nav-item {
+    margin-bottom: 10px; /* Space between buttons */
+}
+
+.sidenav .btn {
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    background-color: #A30020; /* Dark Red */
+    border: none;
+    color: white; /* Make font color white */
+}
+.sidenav .btn:hover {
+        background-color: #7a0018; /* Darker red on hover */
+        color: #fff; /* Make text white if it’s not already */
+}
+
+
+/*Shift Schedule*/
+#calendar {
+    background-color: white;
+    min-height: 300px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+.container {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+/* Table improvements */
+.table thead {
+    background-color: #A30020; /* Dark Red Color */
+    color: white;
+}
+
+/* Table improvements */
+.table {
+    background-color: white;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.table tbody tr:hover {
+        background-color: #f1f1f1;
+}
+
+.input-group {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+/* Badge Styling */
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: black;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #A30020;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #7a0018;
+    }
+
+.btn-search {
+    background-color: #A30020;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+}
+
+    .btn-search:hover {
+        background-color: #7a0018; /* Slightly darker on hover */
+    }
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+}
+
+    .btn-secondary:hover {
+        background-color: #565e64;
+    }
+
+
+/* Responsive */
+@media (max-width: 576px) {
+    .form-inline {
+        flex-direction: column;
+    }
+
+        .form-inline .form-group,
+        .form-inline .btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .form-inline {
+        flex-direction: column;
+    }
+
+        .form-inline .form-group,
+        .form-inline .btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
 }

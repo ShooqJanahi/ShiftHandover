@@ -27,7 +27,7 @@ public class AccountController : Controller
         if (user != null && PasswordHelper.Hash(model.Password) == user.PasswordHash)
         {
             HttpContext.Session.SetString("Username", user.Username);
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("UserDashboard", "Dashboard");
         }
 
         ViewBag.Message = "Invalid credentials.";

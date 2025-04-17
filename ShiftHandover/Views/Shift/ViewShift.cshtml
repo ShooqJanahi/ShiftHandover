@@ -1,0 +1,122 @@
+﻿@model ShiftHandover.Models.Shift
+
+@{
+    ViewBag.Title = "Shift Details";
+}
+
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-3 sidenav hidden-xs">
+            <h2>Shift Panel</h2>
+            <ul class="nav nav-pills nav-stacked flex-column">
+                <li class="nav-item">
+                    <a class="btn" asp-area="" asp-controller="Dashboard" asp-action="UserDashboard">Dashboard</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="btn" asp-area="" asp-controller="Shift" asp-action="ListAvailableShifts">Claim Shift</a>
+                </li>
+
+                @if (!Model.IsClosed)
+                {
+                    <li class="nav-item">
+                        <a class="btn" href="#logShift">Log Shift Activity</a>
+                    </li>
+                }
+                @if (Model.IsClosed)
+                {
+                    <li class="nav-item">
+                        <a class="btn" href="#generateReport">Generate Report</a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="col-sm-9">
+            <div class="well" id="claimShift">
+                <h2>Shift Details</h2>
+                <hr />
+
+                <dl class="row">
+                    <dt class="col-sm-3">Supervisor Name:</dt>
+                    <dd class="col-sm-9">@Model.SupervisorName</dd>
+
+                    <dt class="col-sm-3">Location:</dt>
+                    <dd class="col-sm-9">@Model.Location</dd>
+
+                    <dt class="col-sm-3">Shift Type:</dt>
+                    <dd class="col-sm-9">@Model.ShiftType</dd>
+
+                    <dt class="col-sm-3">Start Time:</dt>
+                    <dd class="col-sm-9">@Model.StartTime.ToString("f")</dd>
+
+                    <dt class="col-sm-3">End Time:</dt>
+                    <dd class="col-sm-9">@Model.EndTime?.ToString("f")</dd>
+
+                    <dt class="col-sm-3">Total Manpower:</dt>
+                    <dd class="col-sm-9">@Model.TotalManpower</dd>
+
+                    <dt class="col-sm-3">Notes:</dt>
+                    <dd class="col-sm-9">@Model.Notes</dd>
+
+                    <dt class="col-sm-3">Shift Status:</dt>
+                    <dd class="col-sm-9">@((Model.IsClosed) ? "Closed" : (Model.IsClaimed ? "Claimed" : "Available"))</dd>
+                </dl>
+
+                @* Only show the Close Shift button if shift is Claimed and not Closed *@
+                @if (Model.IsClaimed && !Model.IsClosed)
+                {
+                    <h4>Close Shift</h4>
+                    <p>Click below to close your shift. No more edits allowed after closing.</p>
+                    <form id="closeShiftForm" asp-action="CloseShift" method="post" asp-route-id="@Model.Id">
+                        <button type="button" class="btn btn-warning" onclick="confirmCloseShift()">Close My Shift</button>
+                    </form>
+
+
+                }
+            </div>
+
+            @* Show Log Activity Form only if claimed and not closed *@
+            @if (Model.IsClaimed && !Model.IsClosed)
+            {
+                <div class="well" id="logShift">
+                    <h4>Log Shift Activity</h4>
+                    <p>Log accidents, incidents, and manpower details.</p>
+                    <form asp-action="LogShift" method="post">
+                        <div class="form-group">
+                            <label for="type">Type</label>
+                            <select class="form-control" name="Type" required>
+                                <option value="">Select Type</option>
+                                <option value="Accident">Accident</option>
+                                <option value="Incident">Incident</option>
+                                <option value="Manpower">Manpower</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" name="Description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="logTime">Time</label>
+                            <input type="datetime-local" class="form-control" name="LogTime" required />
+                        </div>
+                        <button type="submit" class="btn btn-success">Submit Log</button>
+                    </form>
+                </div>
+            }
+
+            @* Show Generate Report only if shift is Closed *@
+            @if (Model.IsClosed)
+            {
+                <div class="well" id="generateReport">
+                    <h4>Generate PDF Report</h4>
+                    <p>Download a report of all activities logged in your closed shift.</p>
+                    <form asp-action="GenerateReport" method="post" asp-route-id="@Model.Id">
+                        <button type="submit" class="btn btn-info">Download Report</button>
+                    </form>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>

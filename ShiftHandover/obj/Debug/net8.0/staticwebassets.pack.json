@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\js\\shiftCalendar.js",
+      "PackagePath": "staticwebassets\\js\\shiftCalendar.js"
+    },
+    {
       "Id": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

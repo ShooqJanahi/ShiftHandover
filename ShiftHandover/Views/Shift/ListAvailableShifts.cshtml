@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ShiftHandover.Models.Shift>
+
+@{
+    ViewBag.Title = "Available Shifts";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Keeping layout
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Available Shifts</h2>
+
+    <!-- Search Bar -->
+    <form asp-action="ListAvailableShifts" method="get" class="mb-4 w-100">
+        <div class="d-flex justify-content-center" style="max-width: 900px; margin: 0 auto;">
+            <input type="text" name="searchTerm" class="form-control mr-2" placeholder="Search shifts..." value="@Context.Request.Query["searchTerm"]" />
+            <button type="submit" class="btn btn-search mr-2">Search</button>
+            <a href="/Shift/ListAvailableShifts" class="btn btn-secondary">Clear</a>
+        </div>
+    </form>
+
+
+
+
+    <hr />
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            No records to show.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Shift Type</th>
+                        <th>Location</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Notes</th>
+                        <th>Supervisor</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var shift in Model)
+                    {
+                        <tr>
+                            <td>@shift.ShiftType</td>
+                            <td>@shift.Location</td>
+                            <td>@shift.StartTime.ToString("g")</td>
+                            <td>@(shift.EndTime.HasValue ? shift.EndTime.Value.ToString("g") : "N/A")</td>
+                            <td>@shift.Notes</td>
+                            <td>@(shift.IsClaimed ? shift.SupervisorName : "N/A")</td>
+                            <td>
+                                <span class="badge @(shift.IsClaimed ? "badge-success" : "badge-warning")">
+                                    @(shift.IsClaimed ? "Claimed" : "Unclaimed")
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

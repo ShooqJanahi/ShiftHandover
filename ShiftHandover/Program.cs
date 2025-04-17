@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShiftHandover.Models;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages(); //  This line is required for MapRazorPages()
 builder.Services.AddSession();
 
-
+// ADD THIS LINE right here before builder.Build();
+QuestPDF.Settings.License = LicenseType.Community;
 
 
 
@@ -43,7 +45,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 
 app.Run();

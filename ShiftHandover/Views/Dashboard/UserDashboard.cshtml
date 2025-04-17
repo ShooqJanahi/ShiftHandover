@@ -7,63 +7,25 @@
     <div class="row content">
         <div class="col-sm-3 sidenav hidden-xs">
             <h2>Shift Panel</h2>
-            <ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#claimShift">Claim Shift</a></li>
-                <li><a href="#logShift">Log Shift Activity</a></li>
-                <li><a href="#closeShift">Close Shift</a></li>
-                <li><a href="#generateReport">Generate Report</a></li>
-            </ul><br>
+            <ul class="nav nav-pills nav-stacked flex-column">
+                <li class="nav-item">
+                    <a class="btn" asp-area="" asp-controller="Shift" asp-action="ListAvailableShifts">Claim Shift</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn" href="#logShift">Shift History</a>
+                </li>
+                
+       
+            </ul>
         </div>
 
         <div class="col-sm-9">
-            <div class="well" id="claimShift">
-                <h4>Claim Shift</h4>
-                <p>Supervisors can claim an available shift. Once claimed, it is locked for others.</p>
-                <form asp-action="ClaimShift" method="post">
-                    <button type="submit" class="btn btn-primary">Claim My Shift</button>
-                </form>
-            </div>
+        <div class="well" id="calendarWell">
+            <h4>Shift Calendar</h4>
+            <div id="calendar"></div>
+        </div>
 
-            <div class="well" id="logShift">
-                <h4>Log Shift Activity</h4>
-                <p>Log accidents, incidents, and manpower details.</p>
-                <form asp-action="LogShift" method="post">
-                    <div class="form-group">
-                        <label for="type">Type</label>
-                        <select class="form-control" name="Type" required>
-                            <option value="">Select Type</option>
-                            <option value="Accident">Accident</option>
-                            <option value="Incident">Incident</option>
-                            <option value="Manpower">Manpower</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" name="Description" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="logTime">Time</label>
-                        <input type="datetime-local" class="form-control" name="LogTime" required />
-                    </div>
-                    <button type="submit" class="btn btn-success">Submit Log</button>
-                </form>
-            </div>
-
-            <div class="well" id="closeShift">
-                <h4>Close Shift</h4>
-                <p>Click below to close your shift. No more edits allowed after closing.</p>
-                <form asp-action="CloseShift" method="post">
-                    <button type="submit" class="btn btn-warning">Close My Shift</button>
-                </form>
-            </div>
-
-            <div class="well" id="generateReport">
-                <h4>Generate PDF Report</h4>
-                <p>Download a report of all activities logged in your closed shift.</p>
-                <form asp-action="GenerateReport" method="post">
-                    <button type="submit" class="btn btn-info">Download Report</button>
-                </form>
-            </div>
+           
         </div>
     </div>
 </div>
