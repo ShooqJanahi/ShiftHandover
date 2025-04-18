@@ -1,5 +1,6 @@
 ﻿@model ShiftHandover.Models.Shift
 
+
 @{
     ViewBag.Title = "Shift Details";
 }
@@ -169,6 +170,8 @@
 {
     <div class="well" id="shiftLogs">
         <h4>Shift Activity Logs</h4>
+
+        <div class="table-responsive">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -195,6 +198,7 @@
                 }
             </tbody>
         </table>
+       </div>
     </div>
 }
 else

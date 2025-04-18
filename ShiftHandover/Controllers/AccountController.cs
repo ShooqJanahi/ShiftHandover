@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using ShiftHandover.Models;
 using ShiftHandover.Helpers;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 
 public class AccountController : Controller
 {
@@ -18,28 +22,52 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public IActionResult Login(LoginViewModel model)
+    public async Task<IActionResult> Login(LoginViewModel model)
     {
         if (!ModelState.IsValid)
             return View(model);
 
         var user = _context.Users.FirstOrDefault(u => u.Username == model.Username && u.IsActive);
+
         if (user != null && PasswordHelper.Hash(model.Password) == user.PasswordHash)
         {
-            // Save Username and Role in session
             HttpContext.Session.SetString("Username", user.Username);
-            HttpContext.Session.SetString("Role", user.RoleTitle); // Save the user's role too
+            HttpContext.Session.SetString("Role", user.RoleTitle);
 
+            var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim(ClaimTypes.Role, user.RoleTitle)
+        };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(8)
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties
+            );
+
+            // 🔥 REDIRECTION BASED ON ROLE
             if (user.RoleTitle == "Supervisor")
             {
-                // Supervisor is allowed
                 return RedirectToAction("UserDashboard", "Dashboard");
+            }
+            else if (user.RoleTitle == "Admin")
+            {
+                return RedirectToAction("AdminDashboard", "Dashboard");
             }
             else
             {
-                // Not a Supervisor ➔ Show warning
                 TempData["Warning"] = "You do not have the privilege to access the system.";
-                HttpContext.Session.Clear(); // Clear session for safety
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                HttpContext.Session.Clear();
                 return RedirectToAction("Login");
             }
         }
@@ -48,9 +76,28 @@ public class AccountController : Controller
         return View(model);
     }
 
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
+        // 🔥 Clear the authentication cookie
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        // 🔥 Clear session
         HttpContext.Session.Clear();
+
         return RedirectToAction("Login");
     }
+
+
+
+    //backend endpoint for session check
+    [HttpGet]
+    public IActionResult CheckSession()
+    {
+        var username = HttpContext.Session.GetString("Username");
+        if (string.IsNullOrEmpty(username))
+            return Unauthorized(); // 🛑 No session
+
+        return Ok(); // ✅ Session is alive
+    }
 }
+

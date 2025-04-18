@@ -30,13 +30,52 @@ document.addEventListener('DOMContentLoaded', function () {
     const involvedInput = document.getElementById('involvedPersonInput');
     const datalist = document.getElementById('usernamesList');
 
-    typeSelect.addEventListener('change', function () {
-        if (this.value === 'Manpower') {
-            involvedInput.removeAttribute('list');
-            involvedInput.placeholder = 'Enter manpower number';
-        } else {
-            involvedInput.setAttribute('list', 'usernamesList');
-            involvedInput.placeholder = 'Enter username';
-        }
-    });
+    if (typeSelect && involvedInput) {  // <-- ✅ Check if they exist
+        typeSelect.addEventListener('change', function () {
+            if (this.value === 'Manpower') {
+                involvedInput.removeAttribute('list');
+                involvedInput.placeholder = 'Enter manpower number';
+            } else {
+                involvedInput.setAttribute('list', 'usernamesList');
+                involvedInput.placeholder = 'Enter username';
+            }
+        });
+    }
+});
+
+
+//Session Checker
+let sessionCheckInterval;
+let sessionTimeout;
+
+function resetSessionTimer() {
+    clearTimeout(sessionTimeout);
+    sessionTimeout = setTimeout(function () {
+        alert('Your session has expired due to inactivity.');
+        window.location.href = '/Account/Login';
+    }, 15 * 60 * 1000); // 15 minutes
+}
+
+function checkSession() {
+    fetch('/Account/CheckSession', { method: 'GET' })
+        .then(response => {
+            if (response.status === 401) {
+                alert('Session expired. Please log in again.');
+                window.location.href = '/Account/Login';
+            }
+        })
+        .catch(error => {
+            console.error('Session check failed:', error);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Check session every 2 minutes
+    sessionCheckInterval = setInterval(checkSession, 2 * 60 * 1000);
+
+    // Reset timer on mouse move or key press
+    document.addEventListener('mousemove', resetSessionTimer);
+    document.addEventListener('keydown', resetSessionTimer);
+
+    resetSessionTimer(); // Start the timer immediately
 });

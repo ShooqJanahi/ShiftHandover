@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using ShiftHandover.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
+[Authorize]
 public class ShiftController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -28,20 +30,19 @@ public class ShiftController : Controller
         }
 
         var shifts = _context.Shifts
-            .Where(s => s.SupervisorName == username && s.IsClaimed) // 🔥 Only claimed by THIS supervisor
+            .Where(s => s.SupervisorName == username && s.IsClaimed) // ✅ Only the shifts claimed by this user
             .Select(s => new
             {
                 id = s.Id,
                 title = s.ShiftType + " Shift - " + s.Location,
-                start = s.StartTime.ToString("s"),
+                start = s.StartTime.ToString("s"), // ISO format
                 end = s.EndTime.HasValue ? s.EndTime.Value.ToString("s") : null,
-                color = s.IsClosed ? "#6c757d" : "#28a745" // Closed = grey, Open = green
+                color = s.IsClosed ? "#6c757d" : "#28a745" // Grey if closed, Green if open
             })
             .ToList();
 
         return Json(shifts);
     }
-
 
     [HttpGet]
     public IActionResult ViewShift(int id)
@@ -49,6 +50,8 @@ public class ShiftController : Controller
         var shift = _context.Shifts.FirstOrDefault(s => s.Id == id);
         if (shift == null)
             return NotFound();
+
+
 
         ViewBag.ShiftLogs = _context.ShiftLogs
             .Where(l => l.ShiftId == id)
@@ -65,11 +68,22 @@ public class ShiftController : Controller
     [HttpPost]
     public IActionResult CloseShift(int id)
     {
+        var username = HttpContext.Session.GetString("Username");
+        if (string.IsNullOrEmpty(username))
+            return RedirectToAction("Login", "Account");
+
+
+
         var shift = _context.Shifts.FirstOrDefault(s => s.Id == id);
 
         if (shift == null)
         {
             return NotFound();
+        }
+
+        if (shift.SupervisorName != username || !shift.IsClaimed || shift.IsClosed)
+        {
+            return Unauthorized(); // 🔥 Protect ownership
         }
 
         shift.IsClosed = true;
@@ -82,10 +96,21 @@ public class ShiftController : Controller
     [HttpGet]
     public IActionResult ListAvailableShifts(string searchTerm, string shiftTypeFilter, string statusFilter)
     {
-        var shifts = _context.Shifts
-            .Where(s => !s.IsClosed)
-            .ToList(); // Load everything to memory first
+        var role = HttpContext.Session.GetString("Role");
 
+        List<Shift> shifts;
+
+        // 🔥 Check the role: Admin sees all shifts, Supervisor sees only not closed
+        if (role == "Admin")
+        {
+            shifts = _context.Shifts.ToList(); // Admin sees ALL shifts
+        }
+        else
+        {
+            shifts = _context.Shifts.Where(s => !s.IsClosed).ToList(); // Supervisor sees only open shifts
+        }
+
+        // 🔥 Apply search
         if (!string.IsNullOrEmpty(searchTerm))
         {
             searchTerm = searchTerm.ToLower();
@@ -101,6 +126,7 @@ public class ShiftController : Controller
             ).ToList();
         }
 
+        // 🔥 Apply additional filters
         if (!string.IsNullOrEmpty(shiftTypeFilter))
         {
             shifts = shifts.Where(s => s.ShiftType != null && s.ShiftType.Equals(shiftTypeFilter, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -254,21 +280,37 @@ public class ShiftController : Controller
     }
 
     [HttpGet]
-    public IActionResult ShiftHistory()
+    public IActionResult ShiftHistory(string searchTerm)
     {
         var username = HttpContext.Session.GetString("Username");
         if (string.IsNullOrEmpty(username))
             return RedirectToAction("Login", "Account");
 
-        var closedShifts = _context.Shifts
-         .Where(s => s.SupervisorName == username && s.IsClosed)
-         .OrderByDescending(s => s.EndTime)
-         .ToList();
+        // 🔥 Step 1: Fetch the shifts first from the database
+        var shifts = _context.Shifts
+            .Where(s => s.SupervisorName == username && s.IsClosed)
+            .OrderByDescending(s => s.StartTime)
+            .ToList(); // ⚡ Load into memory first
 
-            return View(closedShifts);
+        // 🔥 Step 2: Do the search in memory
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            searchTerm = searchTerm.ToLower();
 
+            shifts = shifts.Where(s =>
+                s.Id.ToString().Contains(searchTerm) ||
+                (s.Location != null && s.Location.ToLower().Contains(searchTerm)) ||
+                (s.ShiftType != null && s.ShiftType.ToLower().Contains(searchTerm)) ||
+                s.StartTime.ToString("f").ToLower().Contains(searchTerm) ||
+                (s.EndTime.HasValue && s.EndTime.Value.ToString("f").ToLower().Contains(searchTerm)) ||
+                (s.TotalManpower.HasValue && s.TotalManpower.Value.ToString().Contains(searchTerm)) ||
+                (s.Notes != null && s.Notes.ToLower().Contains(searchTerm))
+            ).ToList();
+        }
 
+        return View(shifts);
     }
+
 
     [HttpPost]
     public IActionResult LogShift(int id, string Type, string Description, DateTime LogTime, string InvolvedPerson, string Severity)
@@ -346,6 +388,50 @@ public class ShiftController : Controller
         _context.SaveChanges();
 
         return RedirectToAction("ViewShift", new { id = id });
+    }
+
+    [HttpGet]
+    public IActionResult AllShifts(string searchTerm, string shiftTypeFilter, string statusFilter)
+    {
+        var role = HttpContext.Session.GetString("Role");
+        if (role != "Admin")
+        {
+            return Unauthorized();
+        }
+
+
+        var shifts = _context.Shifts
+            .ToList(); // ✅ Admin sees ALL (even closed)
+
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            searchTerm = searchTerm.ToLower();
+
+            shifts = shifts.Where(s =>
+                (s.ShiftType != null && s.ShiftType.ToLower().Contains(searchTerm)) ||
+                (s.Location != null && s.Location.ToLower().Contains(searchTerm)) ||
+                (s.SupervisorName != null && s.SupervisorName.ToLower().Contains(searchTerm)) ||
+                (s.StartTime.ToString("dddd").ToLower().Contains(searchTerm)) ||
+                (s.StartTime.ToString("f").ToLower().Contains(searchTerm)) ||
+                (s.EndTime.HasValue && s.EndTime.Value.ToString("f").ToLower().Contains(searchTerm)) ||
+                (s.IsClaimed ? "claimed".Contains(searchTerm) : "unclaimed".Contains(searchTerm))
+            ).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(shiftTypeFilter))
+        {
+            shifts = shifts.Where(s => s.ShiftType != null && s.ShiftType.Equals(shiftTypeFilter, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(statusFilter))
+        {
+            if (statusFilter == "Claimed")
+                shifts = shifts.Where(s => s.IsClaimed).ToList();
+            else if (statusFilter == "Unclaimed")
+                shifts = shifts.Where(s => !s.IsClaimed).ToList();
+        }
+
+        return View("ListAvailableShifts", shifts); // Reuse SAME VIEW
     }
 
 

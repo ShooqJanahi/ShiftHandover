@@ -3,25 +3,36 @@
 <h2>Login</h2>
 
 <form asp-action="Login" method="post">
-    <div>
+    <div class="form-group">
         <label asp-for="Username"></label>
         <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
     </div>
-    <div>
+    <div class="form-group">
         <label asp-for="Password"></label>
         <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
+
     <button type="submit" class="btn btn-primary">Login</button>
 </form>
 
-@if (ViewBag.Message != null)
-{
-    <p style="color:red">@ViewBag.Message</p>
-}
+@section Scripts {
+    <script>
+        // If there is a normal login error
+        @if (ViewBag.Message != null)
+        {
+            <text>
+                    alert("@ViewBag.Message");
+            </text>
+        }
 
-@if (TempData["Warning"] != null)
-{
-    <div class="alert alert-warning text-center">
-        @TempData["Warning"]
-    </div>
+        // If there is a privilege warning
+        @if (TempData["Warning"] != null)
+        {
+            <text>
+                    alert("@TempData["Warning"]");
+            </text>
+        }
+    </script>
 }

@@ -12,8 +12,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>sf92yb8hja</Fingerprint>
-      <Integrity>SMrTJWAe8tkK/P8eBaBAk4Jk1CMePzZIDsJC3/EnDNw=</Integrity>
+      <Fingerprint>wp9ldzswl6</Fingerprint>
+      <Integrity>jIKUJUOc9KetytKzivFFMkSC3gXKW9ug16T5iFCss3s=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</OriginalItemSpec>
@@ -36,6 +36,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Charts.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>ShiftHandover</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/ShiftHandover</BasePath>
+      <RelativePath>js/Charts.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>6odnpa11of</Fingerprint>
+      <Integrity>9hVd7vrnXR9dvGYler993L6PWmpKVHLpfpXntaIpddU=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Charts.js'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\shiftCalendar.js'))">
       <SourceType>Package</SourceType>
       <SourceId>ShiftHandover</SourceId>
@@ -48,8 +66,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>b7tmjivzd8</Fingerprint>
-      <Integrity>qZdmKvG2h3+51qC1UpJjUwxTQtNgzWPQ3r2323XXvCI=</Integrity>
+      <Fingerprint>s5rt1l8bzp</Fingerprint>
+      <Integrity>wIOKuqd6qclv0+2ezS2kFKLa/n1xLyES+IWAEIL1mYo=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\shiftCalendar.js'))</OriginalItemSpec>
@@ -66,8 +84,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>tu5o7y4xh0</Fingerprint>
-      <Integrity>Wx1el7ZYfiGrLDEEviVMXkAIkVljLgxGczWar7RWhgQ=</Integrity>
+      <Fingerprint>ulj0u09its</Fingerprint>
+      <Integrity>vq5pWHeI1NO52b2S6PTw8U7n6M+k12ItzNP3/l2zMlg=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))</OriginalItemSpec>

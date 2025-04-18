@@ -25,7 +25,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 var shiftId = info.event.id;
                 window.location.href = '/Shift/ViewShift/' + shiftId;
             },
-            events: '/Shift/GetShifts'
+            events: '/Shift/GetShifts?' + new Date().getTime()
+
+
         });
 
         calendar.render();

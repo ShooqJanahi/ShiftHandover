@@ -14,6 +14,10 @@ namespace ShiftHandover.Controllers
             _context = context;
         }
 
+
+
+
+
         // GET: Admin/AddUser
         public IActionResult AddUser()
         {
@@ -59,5 +63,59 @@ namespace ShiftHandover.Controllers
             TempData["SuccessMessage"] = "User created successfully!";
             return RedirectToAction("AddUser");
         }
+
+        public IActionResult ListUsers(string searchTerm, string statusFilter)
+        {
+            var users = _context.Users.ToList();
+
+            // 🔥 Apply search
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();
+                users = users.Where(u =>
+                    u.FirstName.ToLower().Contains(searchTerm) ||
+                    u.LastName.ToLower().Contains(searchTerm) ||
+                    u.Username.ToLower().Contains(searchTerm) ||
+                    u.Email.ToLower().Contains(searchTerm) ||
+                    u.PhoneNumber.ToLower().Contains(searchTerm) ||
+                    u.Department.ToLower().Contains(searchTerm) ||
+                    u.RoleTitle.ToLower().Contains(searchTerm) ||
+                    u.UserId.ToString().Contains(searchTerm) // 🎯 Allow search by User ID
+                ).ToList();
+            }
+
+            // 🔥 Apply status filter
+            if (!string.IsNullOrEmpty(statusFilter))
+            {
+                if (statusFilter == "Active")
+                    users = users.Where(u => u.IsActive).ToList();
+                else if (statusFilter == "Inactive")
+                    users = users.Where(u => !u.IsActive).ToList();
+            }
+
+            return View(users);
+        }
+
+        public IActionResult ViewUser(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userShifts = _context.Shifts
+                            .Where(s => s.SupervisorId == user.UserId.ToString())
+                            .OrderByDescending(s => s.StartTime)
+                            .ToList();
+
+            ViewBag.UserShifts = userShifts;
+
+            return View(user);
+        }
+
+
+
     }
 }

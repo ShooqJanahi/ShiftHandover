@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+
+    <!-- Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white text-center">
+                <div class="card-body">
+                    <h5>Total Users</h5>
+                    <h3>@ViewBag.TotalUsers</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white text-center">
+                <div class="card-body">
+                    <h5>Total Shifts</h5>
+                    <h3>@ViewBag.TotalShifts</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-danger text-white text-center">
+                <div class="card-body">
+                    <h5>Total Accidents</h5>
+                    <h3>@ViewBag.TotalAccidents</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Claimed vs Unclaimed Shifts</div>
+                <div class="card-body">
+                    <div id="donutchart" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Shifts Over Time</div>
+                <div class="card-body">
+                    <div id="curve_chart" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+  
+    <script>
+        window.dashboardData = {
+            claimed: @ViewBag.ClaimedShifts,
+            unclaimed: @ViewBag.UnclaimedShifts,
+            shiftDates: @Html.Raw(Json.Serialize(ViewBag.ShiftDates)),
+            shiftCounts: @Html.Raw(Json.Serialize(ViewBag.ShiftCounts))
+        };
+    </script>
+}

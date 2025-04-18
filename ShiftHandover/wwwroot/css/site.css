@@ -198,7 +198,8 @@ footer {
     border-radius: 6px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    max-width: 900px;
+    max-width: 1200px;
+    width: 100%
     margin: 0 auto;
 }
 
@@ -301,4 +302,12 @@ footer {
     .sidenav {
         display: none;
     }
+}
+
+.well {
+    background-color: #f8f9fa; /* Light grey background */
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
