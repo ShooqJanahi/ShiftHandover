@@ -19,9 +19,7 @@ html {
 
 
 
-.row.content {
-    height: 550px;
-}
+
 
 .sidenav {
     background-color: #f1f1f1;
@@ -37,32 +35,42 @@ html {
 
 /*Added Style*/
 html, body {
-    
+    height: 100%;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* only body stretches, not the footer */
+    flex: 1 0 auto;
+   
 }
 
 main {
     flex: 1 0 auto;
+    padding-top: 20px;
+    padding-bottom: 80px; /* enough space for footer */
 }
 
 footer {
     flex-shrink: 0;
-    background-color: #ffffff; /* <-- pure white background */
+    background-color: #ffffff;
     text-align: center;
-    padding: 3px 0; /* Small padding */
-    font-size: 14px;
-    color: #6c757d; /* Footer text color */
-    border-top: 1px solid #ddd; /* Thin top border */
+    padding: 5px 0;
+    font-size: 13px;
+    color: #6c757d;
+    border-top: 1px solid #ddd;
 }
+
+.footer-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
 
 
 
@@ -86,14 +94,52 @@ footer {
         font-weight: bold;
     }
 
-.btn-logout {
-    background-color: #002244;
-    color: white;
+.custom-nav-link {
+    color: #555;
+    margin-right: 15px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-    .btn-logout:hover {
-        background-color: #001122;
+    .custom-nav-link:hover {
+        background-color: #dc3545; /* Bootstrap danger color */
+        color: white;
+        text-decoration: none;
     }
+
+.custom-logout-btn {
+    margin-left: 15px;
+    padding: 8px 15px;
+    font-weight: 500;
+    background: none;
+    border: none;
+    color: #555;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .custom-logout-btn:hover {
+        background-color: #dc3545;
+        color: white;
+        text-decoration: none;
+    }
+
+
+
+/* Navbar */
+.navbar {
+    background-color: white;
+    padding: 0.5rem 1rem;
+}
+
+/* Highlight full nav link on hover */
+.nav-item:hover .nav-link {
+    background-color: #dc3545;
+    color: white;
+    border-radius: 5px;
+}
+
+
 
 
 /* Shift Panel Styles */
@@ -135,8 +181,10 @@ footer {
 
 .container {
     padding-top: 40px;
-    padding-bottom: 40px;
+    padding-bottom: 1px; /* Give more space for footer not to overlap */
+    
 }
+
 
 /* Table improvements */
 .table thead {
@@ -176,12 +224,15 @@ footer {
 
 /* Buttons */
 .btn-primary {
-    background-color: #A30020;
-    border: none;
+    background-color: #A30020 !important; /* <-- ADD !important */
+    border: none !important;
+    color: white !important;
+    transition: background-color 0.3s ease;
 }
 
     .btn-primary:hover {
-        background-color: #7a0018;
+        background-color: #7a0018 !important; /* <-- ADD !important */
+        color: white !important;
     }
 
 .btn-search {
@@ -229,4 +280,25 @@ footer {
             width: 100%;
             margin-bottom: 10px;
         }
+}
+
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+
+.nav-link.active {
+    background-color: #dc3545;
+    color: white;
+    border-radius: 5px;
+}
+
+/*Hide Shift Panel on small screens*/
+@media (max-width: 767px) {
+    .sidenav {
+        display: none;
+    }
 }

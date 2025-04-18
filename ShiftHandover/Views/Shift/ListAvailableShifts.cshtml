@@ -54,10 +54,27 @@
                             <td>@shift.Notes</td>
                             <td>@(shift.IsClaimed ? shift.SupervisorName : "N/A")</td>
                             <td>
-                                <span class="badge @(shift.IsClaimed ? "badge-success" : "badge-warning")">
-                                    @(shift.IsClaimed ? "Claimed" : "Unclaimed")
-                                </span>
+                                @if (!shift.IsClaimed)
+                                {
+                                    var username = Context.Session.GetString("Username");
+                                    if (!string.IsNullOrEmpty(username))
+                                    {
+                                        <form asp-action="Claim" asp-controller="Shift" method="post" style="display:inline;">
+                                            <input type="hidden" name="id" value="@shift.Id" />
+                                            <button type="submit" class="btn btn-success btn-sm">Claim</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-warning">Unclaimed</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="badge badge-success">Claimed</span>
+                                }
                             </td>
+
                         </tr>
                     }
                 </tbody>

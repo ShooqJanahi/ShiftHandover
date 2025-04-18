@@ -26,8 +26,22 @@ public class AccountController : Controller
         var user = _context.Users.FirstOrDefault(u => u.Username == model.Username && u.IsActive);
         if (user != null && PasswordHelper.Hash(model.Password) == user.PasswordHash)
         {
+            // Save Username and Role in session
             HttpContext.Session.SetString("Username", user.Username);
-            return RedirectToAction("UserDashboard", "Dashboard");
+            HttpContext.Session.SetString("Role", user.RoleTitle); // Save the user's role too
+
+            if (user.RoleTitle == "Supervisor")
+            {
+                // Supervisor is allowed
+                return RedirectToAction("UserDashboard", "Dashboard");
+            }
+            else
+            {
+                // Not a Supervisor ➔ Show warning
+                TempData["Warning"] = "You do not have the privilege to access the system.";
+                HttpContext.Session.Clear(); // Clear session for safety
+                return RedirectToAction("Login");
+            }
         }
 
         ViewBag.Message = "Invalid credentials.";

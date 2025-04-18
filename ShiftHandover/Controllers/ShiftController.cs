@@ -1,6 +1,7 @@
 ﻿using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using ShiftHandover.Models;
@@ -19,17 +20,28 @@ public class ShiftController : Controller
     [HttpGet]
     public IActionResult GetShifts()
     {
-        var shifts = _context.Shifts.Select(s => new
+        var username = HttpContext.Session.GetString("Username");
+
+        if (string.IsNullOrEmpty(username))
         {
-            id = s.Id, // Important! Send Id
-            title = (s.IsClaimed ? "Claimed by " + s.SupervisorName : "Available Shift") + " - " + s.Location,
-            start = s.StartTime.ToString("s"), // ISO 8601
-            end = s.EndTime.HasValue ? s.EndTime.Value.ToString("s") : null,
-            color = s.IsClaimed ? "#A30020" : "#28a745" // Red if claimed, Green if available
-        }).ToList();
+            return Unauthorized(); // 🚨 Make sure user is logged in
+        }
+
+        var shifts = _context.Shifts
+            .Where(s => s.SupervisorName == username && s.IsClaimed) // 🔥 Only claimed by THIS supervisor
+            .Select(s => new
+            {
+                id = s.Id,
+                title = s.ShiftType + " Shift - " + s.Location,
+                start = s.StartTime.ToString("s"),
+                end = s.EndTime.HasValue ? s.EndTime.Value.ToString("s") : null,
+                color = s.IsClosed ? "#6c757d" : "#28a745" // Closed = grey, Open = green
+            })
+            .ToList();
 
         return Json(shifts);
     }
+
 
     [HttpGet]
     public IActionResult ViewShift(int id)
@@ -38,8 +50,17 @@ public class ShiftController : Controller
         if (shift == null)
             return NotFound();
 
-        return View(shift); // Will pass Shift object to the view
+        ViewBag.ShiftLogs = _context.ShiftLogs
+            .Where(l => l.ShiftId == id)
+            .OrderByDescending(l => l.LogTime)
+            .ToList();
+
+        ViewBag.Usernames = _context.Users.Select(u => u.Username).ToList();
+
+        return View(shift);
     }
+
+
 
     [HttpPost]
     public IActionResult CloseShift(int id)
@@ -133,9 +154,10 @@ public class ShiftController : Controller
             return NotFound();
 
         var shiftLogs = _context.ShiftLogs
-            .Where(log => log.ShiftId == id)
-            .OrderBy(log => log.LogTime)
-            .ToList();
+             .Where(log => log.ShiftId == id)
+             .OrderByDescending(log => log.LogTime) // 👈 Add this
+             .ToList();
+
 
         var document = Document.Create(container =>
         {
@@ -154,7 +176,8 @@ public class ShiftController : Controller
 
                     col.Item().Border(1).BorderColor("#A30020").Padding(10).Column(innerCol =>
                     {
-                        innerCol.Item().Text($"Shift Report - {shift.Location}").FontSize(20).Bold();
+                        innerCol.Item().Text($"Shift ID: {shift.Id}");
+                      
                         innerCol.Item().Text($"Supervisor: {shift.SupervisorName}");
                         innerCol.Item().Text($"Location: {shift.Location}");
                         innerCol.Item().Text($"Shift Type: {shift.ShiftType}");
@@ -169,15 +192,41 @@ public class ShiftController : Controller
 
                     if (shiftLogs.Any())
                     {
-                        foreach (var log in shiftLogs)
+                        // Make a nice table of logs
+                        col.Item().Table(table =>
                         {
-                            col.Item().BorderBottom(1).PaddingVertical(5).Row(row =>
+                            table.ColumnsDefinition(columns =>
                             {
-                                row.RelativeColumn(3).Text($"{log.LogTime:g}");
-                                row.RelativeColumn(3).Text(log.Type);
-                                row.RelativeColumn(6).Text(log.Description);
+                                columns.RelativeColumn(2); // Time
+                                columns.RelativeColumn(2); // Type
+                                columns.RelativeColumn(2); // Severity
+                                columns.RelativeColumn(3); // Involved Person
+                                columns.RelativeColumn(2); // Manpower Count
+                                columns.RelativeColumn(5); // Description
                             });
-                        }
+
+                            // Header
+                            table.Header(header =>
+                            {
+                                header.Cell().Element(CellStyle).Text("Time").SemiBold();
+                                header.Cell().Element(CellStyle).Text("Type").SemiBold();
+                                header.Cell().Element(CellStyle).Text("Severity").SemiBold();
+                                header.Cell().Element(CellStyle).Text("Involved Person").SemiBold();
+                                header.Cell().Element(CellStyle).Text("Manpower Count").SemiBold();
+                                header.Cell().Element(CellStyle).Text("Description").SemiBold();
+                            });
+
+                            // Rows
+                            foreach (var log in shiftLogs)
+                            {
+                                table.Cell().Element(CellStyle).Text($"{log.LogTime:g}");
+                                table.Cell().Element(CellStyle).Text(log.Type);
+                                table.Cell().Element(CellStyle).Text(log.Severity);
+                                table.Cell().Element(CellStyle).Text(string.IsNullOrEmpty(log.InvolvedPerson) ? "-" : log.InvolvedPerson);
+                                table.Cell().Element(CellStyle).Text(log.ManpowerCount.HasValue ? log.ManpowerCount.ToString() : "-");
+                                table.Cell().Element(CellStyle).Text(log.Description);
+                            }
+                        });
                     }
                     else
                     {
@@ -193,11 +242,113 @@ public class ShiftController : Controller
             });
         });
 
-
         byte[] pdfBytes = document.GeneratePdf();
 
         return File(pdfBytes, "application/pdf", $"ShiftReport_{shift.Id}.pdf");
+
+        // Helper method
+        IContainer CellStyle(IContainer container)
+        {
+            return container.PaddingVertical(5).PaddingHorizontal(2);
+        }
     }
+
+    [HttpGet]
+    public IActionResult ShiftHistory()
+    {
+        var username = HttpContext.Session.GetString("Username");
+        if (string.IsNullOrEmpty(username))
+            return RedirectToAction("Login", "Account");
+
+        var closedShifts = _context.Shifts
+         .Where(s => s.SupervisorName == username && s.IsClosed)
+         .OrderByDescending(s => s.EndTime)
+         .ToList();
+
+            return View(closedShifts);
+
+
+    }
+
+    [HttpPost]
+    public IActionResult LogShift(int id, string Type, string Description, DateTime LogTime, string InvolvedPerson, string Severity)
+    {
+        var shift = _context.Shifts.FirstOrDefault(s => s.Id == id);
+        if (shift == null)
+            return NotFound();
+
+        var username = HttpContext.Session.GetString("Username");
+
+        // 🚨 Check if shift is claimed and not closed
+        if (!shift.IsClaimed || shift.IsClosed || shift.SupervisorName != username)
+        {
+            TempData["LogError"] = "You are not allowed to log activities for this shift.";
+            return RedirectToAction("ViewShift", new { id = id });
+        }
+
+        // 🚨 Check if LogTime is inside the shift timing
+        // 🚨 Check if LogTime is inside the shift timing (with tolerance)
+        if (LogTime < shift.StartTime.AddSeconds(-1) || (shift.EndTime.HasValue && LogTime > shift.EndTime.Value.AddSeconds(1)))
+        {
+            TempData["LogError"] = "Log Time must be within your shift's Start and End times.";
+            return RedirectToAction("ViewShift", new { id = id });
+        }
+
+
+        // 🚨 Only allow Accident, Incident, Manpower
+        var allowedTypes = new[] { "Accident", "Incident", "Manpower" };
+        if (!allowedTypes.Contains(Type))
+        {
+            TempData["LogError"] = "Invalid log type selected.";
+            return RedirectToAction("ViewShift", new { id = id });
+        }
+
+        int? manpowerCount = null;
+        string involvedPersonValue = InvolvedPerson;
+
+        if (Type == "Manpower")
+        {
+            if (!int.TryParse(InvolvedPerson, out int manpower))
+            {
+                TempData["LogError"] = "Please enter a valid manpower number.";
+                return RedirectToAction("ViewShift", new { id = id });
+            }
+
+            manpowerCount = manpower;
+            involvedPersonValue = null;
+
+            // ✅ Update Shift TotalManpower
+            shift.TotalManpower = (shift.TotalManpower ?? 0) + manpower;
+        }
+        else
+        {
+            var userExists = _context.Users.Any(u => u.Username == InvolvedPerson);
+            if (!userExists)
+            {
+                TempData["LogError"] = "Involved Person username does not exist.";
+                return RedirectToAction("ViewShift", new { id = id });
+            }
+        }
+
+        var newLog = new ShiftLog
+        {
+            ShiftId = id,
+            Type = Type,
+            Description = Description,
+            LogTime = LogTime,
+            Location = shift.Location,
+            InvolvedPerson = involvedPersonValue,
+            Severity = Severity,
+            ManpowerCount = manpowerCount
+        };
+
+        _context.ShiftLogs.Add(newLog);
+        _context.SaveChanges();
+
+        return RedirectToAction("ViewShift", new { id = id });
+    }
+
+
 
 
 }

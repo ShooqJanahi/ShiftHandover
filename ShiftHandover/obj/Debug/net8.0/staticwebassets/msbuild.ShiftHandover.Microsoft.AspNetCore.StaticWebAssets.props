@@ -12,8 +12,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>m5t9stqp1k</Fingerprint>
-      <Integrity>2gvGszBZfb8Wd9LMVps62cruLc0f3X3edKfEHAiMIsQ=</Integrity>
+      <Fingerprint>sf92yb8hja</Fingerprint>
+      <Integrity>SMrTJWAe8tkK/P8eBaBAk4Jk1CMePzZIDsJC3/EnDNw=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</OriginalItemSpec>
@@ -48,8 +48,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>uoyxltj4nd</Fingerprint>
-      <Integrity>3ibp+zBsNZNDJs8EObjHzh/7EEOJQXj9hxXu8gavZWc=</Integrity>
+      <Fingerprint>b7tmjivzd8</Fingerprint>
+      <Integrity>qZdmKvG2h3+51qC1UpJjUwxTQtNgzWPQ3r2323XXvCI=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\shiftCalendar.js'))</OriginalItemSpec>
@@ -66,8 +66,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>fz03ou7l11</Fingerprint>
-      <Integrity>uyfimEgiRoFLAXa+nXN2yMjmt2lJLHgRDIY4+VaxtCs=</Integrity>
+      <Fingerprint>tu5o7y4xh0</Fingerprint>
+      <Integrity>Wx1el7ZYfiGrLDEEviVMXkAIkVljLgxGczWar7RWhgQ=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))</OriginalItemSpec>

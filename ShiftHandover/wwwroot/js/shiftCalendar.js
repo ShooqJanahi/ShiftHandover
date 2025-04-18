@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
 
+
+
+
     if (calendarEl) {
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'timeGridWeek',
@@ -27,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         calendar.render();
     } else {
-        console.error('Calendar div not found!');
+        console.warn('calendar div not found, skipping calendar initialization.');
+        return; // <--- Exit safely if not found!
     }
 });

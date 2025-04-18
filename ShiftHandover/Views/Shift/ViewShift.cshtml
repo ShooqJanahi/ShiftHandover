@@ -38,6 +38,9 @@
                 <hr />
 
                 <dl class="row">
+                    <dt class="col-sm-3">Shift ID:</dt>
+                    <dd class="col-sm-9">@Model.Id</dd>
+
                     <dt class="col-sm-3">Supervisor Name:</dt>
                     <dd class="col-sm-9">@Model.SupervisorName</dd>
 
@@ -60,7 +63,7 @@
                     <dd class="col-sm-9">@Model.Notes</dd>
 
                     <dt class="col-sm-3">Shift Status:</dt>
-                    <dd class="col-sm-9">@((Model.IsClosed) ? "Closed" : (Model.IsClaimed ? "Claimed" : "Available"))</dd>
+                    <dd class="col-sm-9">@((Model.IsClosed) ? "Closed" : (Model.IsClaimed ? "Claimed" : "Unclaimed"))</dd>
                 </dl>
 
                 @* Only show the Close Shift button if shift is Claimed and not Closed *@
@@ -81,8 +84,16 @@
             {
                 <div class="well" id="logShift">
                     <h4>Log Shift Activity</h4>
+                    @if (TempData["LogError"] != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @TempData["LogError"]
+                        </div>
+                    }
+
                     <p>Log accidents, incidents, and manpower details.</p>
-                    <form asp-action="LogShift" method="post">
+                    <form asp-action="LogShift" asp-route-id="@Model.Id" method="post" id="logShiftForm">
+
                         <div class="form-group">
                             <label for="type">Type</label>
                             <select class="form-control" name="Type" required>
@@ -92,16 +103,49 @@
                                 <option value="Manpower">Manpower</option>
                             </select>
                         </div>
+
+                        <div class="form-group">
+                            <label for="severity">Severity</label>
+                            <select class="form-control" name="Severity" required>
+                                <option value="">Select Severity</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="involvedPerson">Involved Person / Manpower</label>
+                            <input type="text" class="form-control" name="InvolvedPerson" id="involvedPersonInput" list="usernamesList" />
+                            <datalist id="usernamesList">
+                                @foreach (var username in (List<string>)ViewBag.Usernames)
+                                {
+                                    <option value="@username"></option>
+                                }
+                            </datalist>
+                            <small id="inputHelp" class="form-text text-muted">
+                                If Type is Manpower, enter manpower number instead of username.
+                            </small>
+                        </div>
+
+
+
                         <div class="form-group">
                             <label for="description">Description</label>
                             <textarea class="form-control" name="Description" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="logTime">Time</label>
-                            <input type="datetime-local" class="form-control" name="LogTime" required />
+                            <input type="datetime-local" class="form-control" name="LogTime"
+                                   min="@Model.StartTime.ToString("yyyy-MM-ddTHH:mm")"
+                                   max="@Model.EndTime?.ToString("yyyy-MM-ddTHH:mm")" required />
+
                         </div>
-                        <button type="submit" class="btn btn-success">Submit Log</button>
+                        <button type="button" class="btn btn-success" onclick="confirmSubmitLog()">Submit Log</button>
+
                     </form>
+
+
                 </div>
             }
 
@@ -120,3 +164,45 @@
         </div>
     </div>
 </div>
+
+@if (ViewBag.ShiftLogs != null && ((List<ShiftHandover.Models.ShiftLog>)ViewBag.ShiftLogs).Any())
+{
+    <div class="well" id="shiftLogs">
+        <h4>Shift Activity Logs</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Type</th>
+                    <th>Severity</th>
+                    <th>Involved Person</th>
+                    <th>Manpower</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var log in (List<ShiftHandover.Models.ShiftLog>)ViewBag.ShiftLogs)
+                {
+                    <tr>
+                        <td>@log.LogTime.ToString("g")</td>
+                        <td>@log.Type</td>
+                        <td>@log.Severity</td>
+                        <td>@(string.IsNullOrEmpty(log.InvolvedPerson) ? "" : log.InvolvedPerson)</td>
+                        <td>@(log.ManpowerCount.HasValue ? log.ManpowerCount.Value.ToString() : "")</td>
+
+                        <td>@log.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        No activity logs recorded for this shift yet.
+    </div>
+}
+
+
+

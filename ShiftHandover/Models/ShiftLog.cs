@@ -30,7 +30,10 @@ namespace ShiftHandover.Models
         public string Severity { get; set; } // e.g., Low, Medium, High (useful for accidents/incidents)
 
         [Display(Name = "Involved Personnel (Optional)")]
-        public string InvolvedPerson { get; set; } // name or ID of involved employee if any
+        public string? InvolvedPerson { get; set; } // name or ID of involved employee if any
+
+        public int? ManpowerCount { get; set; } // Optional
+
 
         public virtual Shift Shift { get; set; }
     }

@@ -36,10 +36,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXFVzZXJEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/ShiftHandover/ShiftHandover/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/ShiftHandover/ShiftHandover/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -58,6 +54,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/ShiftHandover/ShiftHandover/Views/Shift/ListAvailableShifts.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hpZnRcTGlzdEF2YWlsYWJsZVNoaWZ0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ShiftHandover/ShiftHandover/Views/Shift/ShiftHistory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hpZnRcU2hpZnRIaXN0b3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/ShiftHandover/ShiftHandover/Views/Shift/ViewShift.cshtml]

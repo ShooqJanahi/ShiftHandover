@@ -18,3 +18,10 @@
 {
     <p style="color:red">@ViewBag.Message</p>
 }
+
+@if (TempData["Warning"] != null)
+{
+    <div class="alert alert-warning text-center">
+        @TempData["Warning"]
+    </div>
+}
