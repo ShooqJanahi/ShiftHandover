@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "APtRgB9oYGPnrbwtmsWTh/UlsSiHNHwtUz3TVFabifo=",
+  "Hash": "na1UXgWPUsBtFl5uXcHpL1wPlJcMup1lcw6tGPvHDD0=",
   "Source": "ShiftHandover",
   "BasePath": "_content/ShiftHandover",
   "Mode": "Default",
@@ -1333,8 +1333,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "wp9ldzswl6",
-      "Integrity": "jIKUJUOc9KetytKzivFFMkSC3gXKW9ug16T5iFCss3s=",
+      "Fingerprint": "hwruaz2yew",
+      "Integrity": "P8FEwHHCYUrfbXzYfAi1TTWeT1GY9Ab0u7twnZYE7U8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -1361,6 +1361,48 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
+      "Identity": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\images\\Shift_Handover_icon.png",
+      "SourceId": "ShiftHandover",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\",
+      "BasePath": "_content/ShiftHandover",
+      "RelativePath": "images/Shift_Handover_icon#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mi8ec6cg32",
+      "Integrity": "Yrm+W+6jGAKJBzYUn7Eg9dJ2XB7/eBwg6hSvvRCH+tc=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Shift_Handover_icon.png"
+    },
+    {
+      "Identity": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\images\\Shift_Handover_Logo.png",
+      "SourceId": "ShiftHandover",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\",
+      "BasePath": "_content/ShiftHandover",
+      "RelativePath": "images/Shift_Handover_Logo#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "kodxoq7akd",
+      "Integrity": "hHPzefqwELod4b8Zkhwl9krWGkNTdaH/YHL1nRc5ckQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Shift_Handover_Logo.png"
+    },
+    {
       "Identity": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\js\\Charts.js",
       "SourceId": "ShiftHandover",
       "SourceType": "Discovered",
@@ -1375,8 +1417,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "6odnpa11of",
-      "Integrity": "9hVd7vrnXR9dvGYler993L6PWmpKVHLpfpXntaIpddU=",
+      "Fingerprint": "ijkdsgi3bg",
+      "Integrity": "PmX2cZCIpP5zLySY0MLGQubVzeXZzJuU7mR20zJNtl0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\Charts.js"
@@ -2633,7 +2675,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5649"
+          "Value": "6077"
         },
         {
           "Name": "Content-Type",
@@ -2641,11 +2683,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"jIKUJUOc9KetytKzivFFMkSC3gXKW9ug16T5iFCss3s=\""
+          "Value": "\"P8FEwHHCYUrfbXzYfAi1TTWeT1GY9Ab0u7twnZYE7U8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 18 Apr 2025 11:19:42 GMT"
+          "Value": "Fri, 18 Apr 2025 16:11:57 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2655,12 +2697,12 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-jIKUJUOc9KetytKzivFFMkSC3gXKW9ug16T5iFCss3s="
+          "Value": "sha256-P8FEwHHCYUrfbXzYfAi1TTWeT1GY9Ab0u7twnZYE7U8="
         }
       ]
     },
     {
-      "Route": "css/site.wp9ldzswl6.css",
+      "Route": "css/site.hwruaz2yew.css",
       "AssetFile": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -2670,7 +2712,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5649"
+          "Value": "6077"
         },
         {
           "Name": "Content-Type",
@@ -2678,11 +2720,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"jIKUJUOc9KetytKzivFFMkSC3gXKW9ug16T5iFCss3s=\""
+          "Value": "\"P8FEwHHCYUrfbXzYfAi1TTWeT1GY9Ab0u7twnZYE7U8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 18 Apr 2025 11:19:42 GMT"
+          "Value": "Fri, 18 Apr 2025 16:11:57 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2692,7 +2734,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "wp9ldzswl6"
+          "Value": "hwruaz2yew"
         },
         {
           "Name": "label",
@@ -2700,7 +2742,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-jIKUJUOc9KetytKzivFFMkSC3gXKW9ug16T5iFCss3s="
+          "Value": "sha256-P8FEwHHCYUrfbXzYfAi1TTWeT1GY9Ab0u7twnZYE7U8="
         }
       ]
     },
@@ -5007,8 +5049,8 @@
       ]
     },
     {
-      "Route": "js/Charts.6odnpa11of.js",
-      "AssetFile": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\js\\Charts.js",
+      "Route": "images/Shift_Handover_icon.mi8ec6cg32.png",
+      "AssetFile": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\images\\Shift_Handover_icon.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5017,19 +5059,19 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1646"
+          "Value": "229918"
         },
         {
           "Name": "Content-Type",
-          "Value": "text/javascript"
+          "Value": "image/png"
         },
         {
           "Name": "ETag",
-          "Value": "\"9hVd7vrnXR9dvGYler993L6PWmpKVHLpfpXntaIpddU=\""
+          "Value": "\"Yrm+W+6jGAKJBzYUn7Eg9dJ2XB7/eBwg6hSvvRCH+tc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 18 Apr 2025 12:10:31 GMT"
+          "Value": "Fri, 18 Apr 2025 16:15:51 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5039,7 +5081,171 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "6odnpa11of"
+          "Value": "mi8ec6cg32"
+        },
+        {
+          "Name": "label",
+          "Value": "images/Shift_Handover_icon.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Yrm+W+6jGAKJBzYUn7Eg9dJ2XB7/eBwg6hSvvRCH+tc="
+        }
+      ]
+    },
+    {
+      "Route": "images/Shift_Handover_icon.png",
+      "AssetFile": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\images\\Shift_Handover_icon.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "229918"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Yrm+W+6jGAKJBzYUn7Eg9dJ2XB7/eBwg6hSvvRCH+tc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 18 Apr 2025 16:15:51 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Yrm+W+6jGAKJBzYUn7Eg9dJ2XB7/eBwg6hSvvRCH+tc="
+        }
+      ]
+    },
+    {
+      "Route": "images/Shift_Handover_Logo.kodxoq7akd.png",
+      "AssetFile": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\images\\Shift_Handover_Logo.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "254892"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hHPzefqwELod4b8Zkhwl9krWGkNTdaH/YHL1nRc5ckQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 18 Apr 2025 15:58:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "kodxoq7akd"
+        },
+        {
+          "Name": "label",
+          "Value": "images/Shift_Handover_Logo.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hHPzefqwELod4b8Zkhwl9krWGkNTdaH/YHL1nRc5ckQ="
+        }
+      ]
+    },
+    {
+      "Route": "images/Shift_Handover_Logo.png",
+      "AssetFile": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\images\\Shift_Handover_Logo.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "254892"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hHPzefqwELod4b8Zkhwl9krWGkNTdaH/YHL1nRc5ckQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 18 Apr 2025 15:58:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hHPzefqwELod4b8Zkhwl9krWGkNTdaH/YHL1nRc5ckQ="
+        }
+      ]
+    },
+    {
+      "Route": "js/Charts.ijkdsgi3bg.js",
+      "AssetFile": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\js\\Charts.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3462"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"PmX2cZCIpP5zLySY0MLGQubVzeXZzJuU7mR20zJNtl0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 18 Apr 2025 21:45:59 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ijkdsgi3bg"
         },
         {
           "Name": "label",
@@ -5047,7 +5253,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-9hVd7vrnXR9dvGYler993L6PWmpKVHLpfpXntaIpddU="
+          "Value": "sha256-PmX2cZCIpP5zLySY0MLGQubVzeXZzJuU7mR20zJNtl0="
         }
       ]
     },
@@ -5062,7 +5268,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1646"
+          "Value": "3462"
         },
         {
           "Name": "Content-Type",
@@ -5070,11 +5276,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"9hVd7vrnXR9dvGYler993L6PWmpKVHLpfpXntaIpddU=\""
+          "Value": "\"PmX2cZCIpP5zLySY0MLGQubVzeXZzJuU7mR20zJNtl0=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 18 Apr 2025 12:10:31 GMT"
+          "Value": "Fri, 18 Apr 2025 21:45:59 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5084,7 +5290,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-9hVd7vrnXR9dvGYler993L6PWmpKVHLpfpXntaIpddU="
+          "Value": "sha256-PmX2cZCIpP5zLySY0MLGQubVzeXZzJuU7mR20zJNtl0="
         }
       ]
     },
@@ -5193,7 +5399,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 18 Apr 2025 11:49:38 GMT"
+          "Value": "Fri, 18 Apr 2025 15:31:51 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5230,7 +5436,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 18 Apr 2025 11:49:38 GMT"
+          "Value": "Fri, 18 Apr 2025 15:31:51 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -9949,7 +10155,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 18 Apr 2025 13:31:33 GMT"
+          "Value": "Fri, 18 Apr 2025 21:06:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -9986,7 +10192,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 18 Apr 2025 13:31:33 GMT"
+          "Value": "Fri, 18 Apr 2025 21:06:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -10031,7 +10237,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 18 Apr 2025 13:31:33 GMT"
+          "Value": "Fri, 18 Apr 2025 21:06:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -10076,7 +10282,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 18 Apr 2025 13:31:33 GMT"
+          "Value": "Fri, 18 Apr 2025 21:06:41 GMT"
         },
         {
           "Name": "Cache-Control",

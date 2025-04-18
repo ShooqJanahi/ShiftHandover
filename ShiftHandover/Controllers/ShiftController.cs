@@ -97,7 +97,7 @@ public class ShiftController : Controller
     public IActionResult ListAvailableShifts(string searchTerm, string shiftTypeFilter, string statusFilter)
     {
         var role = HttpContext.Session.GetString("Role");
-
+        var department = HttpContext.Session.GetString("Department");
         List<Shift> shifts;
 
         // 🔥 Check the role: Admin sees all shifts, Supervisor sees only not closed
@@ -107,7 +107,20 @@ public class ShiftController : Controller
         }
         else
         {
-            shifts = _context.Shifts.Where(s => !s.IsClosed).ToList(); // Supervisor sees only open shifts
+            var departmentIdStr = HttpContext.Session.GetString("DepartmentId");
+
+            if (string.IsNullOrEmpty(departmentIdStr))
+            {
+                return Unauthorized();
+            }
+
+            int departmentId = int.Parse(departmentIdStr);
+
+            shifts = _context.Shifts
+                .Where(s => !s.IsClosed && !s.IsClaimed && s.DepartmentId == departmentId)
+                .ToList();
+
+
         }
 
         // 🔥 Apply search
@@ -283,9 +296,20 @@ public class ShiftController : Controller
     public IActionResult ShiftHistory(string searchTerm)
     {
         var username = HttpContext.Session.GetString("Username");
-        if (string.IsNullOrEmpty(username))
-            return RedirectToAction("Login", "Account");
+        var role = HttpContext.Session.GetString("Role");
 
+        if (string.IsNullOrEmpty(username))
+        {
+            // User is not logged in
+            return RedirectToAction("Login", "Account");
+        }
+
+        if (role != "Supervisor")
+        {
+            // User is logged in but NOT a Supervisor
+            TempData["ErrorMessage"] = "You are not authorized to access Shift History.";
+            return RedirectToAction("Login", "Account");
+        }
         // 🔥 Step 1: Fetch the shifts first from the database
         var shifts = _context.Shifts
             .Where(s => s.SupervisorName == username && s.IsClosed)
@@ -384,6 +408,11 @@ public class ShiftController : Controller
             ManpowerCount = manpowerCount
         };
 
+        if (string.IsNullOrWhiteSpace(Description))
+        {
+            Description = "No description provided.";
+        }
+
         _context.ShiftLogs.Add(newLog);
         _context.SaveChanges();
 
@@ -400,8 +429,7 @@ public class ShiftController : Controller
         }
 
 
-        var shifts = _context.Shifts
-            .ToList(); // ✅ Admin sees ALL (even closed)
+        var shifts = _context.Shifts.Include(s => s.Department).ToList();// ✅ Admin sees ALL (even closed)
 
         if (!string.IsNullOrEmpty(searchTerm))
         {
@@ -411,6 +439,7 @@ public class ShiftController : Controller
                 (s.ShiftType != null && s.ShiftType.ToLower().Contains(searchTerm)) ||
                 (s.Location != null && s.Location.ToLower().Contains(searchTerm)) ||
                 (s.SupervisorName != null && s.SupervisorName.ToLower().Contains(searchTerm)) ||
+                  (s.Department != null && s.Department.DepartmentName.ToLower().Contains(searchTerm)) ||
                 (s.StartTime.ToString("dddd").ToLower().Contains(searchTerm)) ||
                 (s.StartTime.ToString("f").ToLower().Contains(searchTerm)) ||
                 (s.EndTime.HasValue && s.EndTime.Value.ToString("f").ToLower().Contains(searchTerm)) ||
@@ -432,6 +461,57 @@ public class ShiftController : Controller
         }
 
         return View("ListAvailableShifts", shifts); // Reuse SAME VIEW
+    }
+
+
+    private string DetectShiftType(DateTime startTime)
+    {
+        var hour = startTime.Hour;
+
+        if (hour >= 5 && hour < 12)
+            return "Morning";
+        else if (hour >= 12 && hour < 17)
+            return "Afternoon";
+        else if (hour >= 17 && hour < 22)
+            return "Evening";
+        else
+            return "Night";
+    }
+
+
+    [HttpGet]
+    public IActionResult AddShift()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult AddShift(Shift model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        model.IsClaimed = false;
+        model.IsClosed = false;
+        model.SupervisorId = "Unassigned";
+        model.SupervisorName = "Unassigned";
+        model.TotalManpower = 0; // ✅ ADD THIS LINE!!
+
+        model.ShiftType = DetectShiftType(model.StartTime);
+
+        if (string.IsNullOrEmpty(model.Notes))
+        {
+            model.Notes = "No notes yet.";
+        }
+
+        _context.Shifts.Add(model);
+        _context.SaveChanges();
+
+        TempData["SuccessMessage"] = "Shift created successfully!";
+        return RedirectToAction(nameof(AddShift));
     }
 
 

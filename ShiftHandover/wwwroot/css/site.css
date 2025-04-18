@@ -71,6 +71,12 @@ footer {
 }
 
 
+.login-btn {
+    width: 200px; /* stretch width */
+    padding: 10px 0; /* make it slightly taller */
+    font-weight: 600; /* make text a bit bolder */
+    font-size: 16px; /* optional: bigger font */
+}
 
 
 
@@ -311,3 +317,12 @@ footer {
     margin-bottom: 30px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
+
+.create-btn {
+    width: 200px; /* stretch width */
+    padding: 10px 0; /* make it slightly taller */
+    font-weight: 600; /* make text a bit bolder */
+    font-size: 16px; /* slightly bigger text */
+}
+
+

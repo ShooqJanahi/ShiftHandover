@@ -13,6 +13,14 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\images\\Shift_Handover_Logo.png",
+      "PackagePath": "staticwebassets\\images\\Shift_Handover_Logo.png"
+    },
+    {
+      "Id": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\images\\Shift_Handover_icon.png",
+      "PackagePath": "staticwebassets\\images\\Shift_Handover_icon.png"
+    },
+    {
       "Id": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\js\\Charts.js",
       "PackagePath": "staticwebassets\\js\\Charts.js"
     },

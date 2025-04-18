@@ -1,5 +1,13 @@
 ﻿@model ShiftHandover.Models.LoginViewModel
 
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="text-center mb-4">
+    <img src="~/images/Shift_Handover_Logo.png" alt="Shift Handover Logo" class="login-logo" />
+</div>
+
 <h2>Login</h2>
 
 <form asp-action="Login" method="post">
@@ -14,7 +22,11 @@
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Login</button>
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary login-btn">Login</button>
+    </div>
+
+
 </form>
 
 @section Scripts {
@@ -34,5 +46,13 @@
                     alert("@TempData["Warning"]");
             </text>
         }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+                <script>
+                    alert('@TempData["ErrorMessage"]');
+        </script>
+        }
+
     </script>
 }

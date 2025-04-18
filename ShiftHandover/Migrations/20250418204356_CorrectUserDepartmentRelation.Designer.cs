@@ -12,8 +12,8 @@ using ShiftHandover.Models;
 namespace ShiftHandover.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250415185801_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250418204356_CorrectUserDepartmentRelation")]
+    partial class CorrectUserDepartmentRelation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,24 @@ namespace ShiftHandover.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ShiftHandover.Models.Department", b =>
+                {
+                    b.Property<int>("DepartmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"));
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("DepartmentId");
+
+                    b.ToTable("Departments");
+                });
+
             modelBuilder.Entity("ShiftHandover.Models.Shift", b =>
                 {
                     b.Property<int>("Id")
@@ -32,6 +50,9 @@ namespace ShiftHandover.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
@@ -72,6 +93,8 @@ namespace ShiftHandover.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DepartmentId");
+
                     b.ToTable("Shifts");
                 });
 
@@ -89,7 +112,6 @@ namespace ShiftHandover.Migrations
                         .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("InvolvedPerson")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -99,6 +121,9 @@ namespace ShiftHandover.Migrations
 
                     b.Property<DateTime>("LogTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("ManpowerCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("Severity")
                         .IsRequired()
@@ -127,10 +152,8 @@ namespace ShiftHandover.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -170,7 +193,23 @@ namespace ShiftHandover.Migrations
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ShiftHandover.Models.Shift", b =>
+                {
+                    b.HasOne("ShiftHandover.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("ShiftHandover.Models.ShiftLog", b =>
@@ -182,6 +221,17 @@ namespace ShiftHandover.Migrations
                         .IsRequired();
 
                     b.Navigation("Shift");
+                });
+
+            modelBuilder.Entity("ShiftHandover.Models.User", b =>
+                {
+                    b.HasOne("ShiftHandover.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("ShiftHandover.Models.Shift", b =>

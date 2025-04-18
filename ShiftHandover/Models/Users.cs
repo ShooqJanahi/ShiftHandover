@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShiftHandover.Models
 {
@@ -30,12 +31,15 @@ namespace ShiftHandover.Models
         [Phone]
         public string PhoneNumber { get; set; }
 
-        [StringLength(100)]
-        public string Department { get; set; }
+        
+        public int? DepartmentId { get; set; }
 
         [StringLength(100)]
         public string RoleTitle { get; set; }
 
         public bool IsActive { get; set; } = true;
+
+        [ForeignKey("DepartmentId")]
+        public Department Department { get; set; }
     }
 }

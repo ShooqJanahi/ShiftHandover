@@ -12,7 +12,9 @@ namespace ShiftHandover.Models
         public DbSet<ShiftLog> ShiftLogs { get; set; }
 
         public DbSet<User> Users { get; set; }
-       
+
+        public DbSet<Department> Departments { get; set; }
+
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

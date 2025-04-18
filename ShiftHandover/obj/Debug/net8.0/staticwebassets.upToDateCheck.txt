@@ -1,5 +1,7 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\Shift_Handover_icon.png
+wwwroot\images\Shift_Handover_Logo.png
 wwwroot\js\Charts.js
 wwwroot\js\shiftCalendar.js
 wwwroot\js\site.js

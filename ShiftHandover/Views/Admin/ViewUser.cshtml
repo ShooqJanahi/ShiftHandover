@@ -67,6 +67,23 @@
                     </dd>
                 </dl>
 
+                <div class="text-center mt-3">
+                    @if (Model.IsActive)
+                    {
+                        <form asp-action="DeactivateUser" method="post" asp-route-id="@Model.UserId" style="display:inline-block;">
+                            <button type="submit" class="btn btn-danger create-btn">Deactivate User</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="ActivateUser" method="post" asp-route-id="@Model.UserId" style="display:inline-block;">
+                            <button type="submit" class="btn btn-success create-btn">Activate User</button>
+                        </form>
+                    }
+                </div>
+
+
+
            
             </div>
 

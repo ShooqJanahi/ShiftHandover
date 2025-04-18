@@ -8,7 +8,7 @@ namespace ShiftHandover.Models
     {
         public int Id { get; set; }
 
-        [Required]
+      
         public string SupervisorId { get; set; }
 
         [Display(Name = "Supervisor Name")]
@@ -39,6 +39,12 @@ namespace ShiftHandover.Models
         [Display(Name = "Shift Type")]
         public string ShiftType { get; set; } // Morning, Evening, Night, etc.
 
+        
+        public int? DepartmentId { get; set; }
+
         public virtual ICollection<ShiftLog> Logs { get; set; }
+
+        public Department Department { get; set; }
+
     }
 }

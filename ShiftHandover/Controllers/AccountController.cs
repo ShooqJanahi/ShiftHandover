@@ -27,12 +27,30 @@ public class AccountController : Controller
         if (!ModelState.IsValid)
             return View(model);
 
-        var user = _context.Users.FirstOrDefault(u => u.Username == model.Username && u.IsActive);
+        var user = _context.Users.FirstOrDefault(u => u.Username == model.Username);
+
+        if (user == null || PasswordHelper.Hash(model.Password) != user.PasswordHash)
+        {
+            ViewBag.Message = "Invalid credentials.";
+            return View(model);
+        }
+
+        if (!user.IsActive)
+        {
+            ViewBag.Message = "Your account is inactive. Please contact the administrator.";
+            return View(model);
+        }
+
+        
+
 
         if (user != null && PasswordHelper.Hash(model.Password) == user.PasswordHash)
         {
             HttpContext.Session.SetString("Username", user.Username);
             HttpContext.Session.SetString("Role", user.RoleTitle);
+            HttpContext.Session.SetString("DepartmentId", user.DepartmentId.ToString());
+
+
 
             var claims = new List<Claim>
         {
@@ -99,5 +117,8 @@ public class AccountController : Controller
 
         return Ok(); // ✅ Session is alive
     }
+
+
+
 }
 

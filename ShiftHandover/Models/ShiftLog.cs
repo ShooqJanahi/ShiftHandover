@@ -20,7 +20,7 @@ namespace ShiftHandover.Models
 
         [Required]
         [StringLength(1000)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [StringLength(100)]
         [Display(Name = "Location (Optional)")]
