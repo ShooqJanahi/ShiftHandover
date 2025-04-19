@@ -29,14 +29,24 @@ public class AccountController : Controller
     {
         // Check if the model state is valid (all required fields are correctly filled)
         if (!ModelState.IsValid)
+        {
+            TempData["ErrorMessage"] = "Please fill all fields correctly.";
             return View(model);
+        }
 
         // Fetch the user from the database by username
         var user = _context.Users.FirstOrDefault(u => u.Username == model.Username);
 
-        if (user == null || PasswordHelper.Hash(model.Password) != user.PasswordHash)
+        if (user == null)
         {
-            ViewBag.Message = "Invalid credentials.";
+            TempData["ErrorMessage"] = "Username does not exist.";
+            return View(model);
+        }
+
+
+        if (PasswordHelper.Hash(model.Password) != user.PasswordHash)
+        {
+            ViewBag.Message = "Invalid Password.";
             return View(model);
         }
 

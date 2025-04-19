@@ -31,7 +31,7 @@
 
 @section Scripts {
     <script>
-        // If there is a normal login error
+        // Regular error from ViewBag
         @if (ViewBag.Message != null)
         {
             <text>
@@ -39,7 +39,7 @@
             </text>
         }
 
-        // If there is a privilege warning
+        // Warning from TempData
         @if (TempData["Warning"] != null)
         {
             <text>
@@ -47,12 +47,13 @@
             </text>
         }
 
+        // Error from TempData
         @if (TempData["ErrorMessage"] != null)
         {
-                <script>
-                    alert('@TempData["ErrorMessage"]');
-        </script>
+            <text>
+                    alert("@TempData["ErrorMessage"]");
+            </text>
         }
-
     </script>
 }
+

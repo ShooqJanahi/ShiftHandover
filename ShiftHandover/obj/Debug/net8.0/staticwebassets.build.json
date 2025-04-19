@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "uD3oBIFfEILou1jaedbpNKhPLw+8tCJC2f/EJ1p/8o0=",
+  "Hash": "fxgMlVgUin9KIbWvKpLZYssCRetz/1sVpUPfGqd01gY=",
   "Source": "ShiftHandover",
   "BasePath": "_content/ShiftHandover",
   "Mode": "Default",
@@ -1354,8 +1354,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "61n19gt1b8",
-      "Integrity": "Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=",
+      "Fingerprint": "d101bneg6v",
+      "Integrity": "cT1Y83h/oz1ITT4Mk51R9j+m5iZRHqxNZ+e0mJ/QmNE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
@@ -2747,7 +2747,7 @@
       ]
     },
     {
-      "Route": "favicon.61n19gt1b8.ico",
+      "Route": "favicon.d101bneg6v.ico",
       "AssetFile": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\favicon.ico",
       "Selectors": [],
       "ResponseHeaders": [
@@ -2757,7 +2757,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5430"
+          "Value": "15406"
         },
         {
           "Name": "Content-Type",
@@ -2765,11 +2765,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=\""
+          "Value": "\"cT1Y83h/oz1ITT4Mk51R9j+m5iZRHqxNZ+e0mJ/QmNE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 15:13:30 GMT"
+          "Value": "Sat, 19 Apr 2025 18:25:43 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2779,7 +2779,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "61n19gt1b8"
+          "Value": "d101bneg6v"
         },
         {
           "Name": "label",
@@ -2787,7 +2787,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM="
+          "Value": "sha256-cT1Y83h/oz1ITT4Mk51R9j+m5iZRHqxNZ+e0mJ/QmNE="
         }
       ]
     },
@@ -2802,7 +2802,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5430"
+          "Value": "15406"
         },
         {
           "Name": "Content-Type",
@@ -2810,11 +2810,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=\""
+          "Value": "\"cT1Y83h/oz1ITT4Mk51R9j+m5iZRHqxNZ+e0mJ/QmNE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 15:13:30 GMT"
+          "Value": "Sat, 19 Apr 2025 18:25:43 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2824,7 +2824,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM="
+          "Value": "sha256-cT1Y83h/oz1ITT4Mk51R9j+m5iZRHqxNZ+e0mJ/QmNE="
         }
       ]
     },
