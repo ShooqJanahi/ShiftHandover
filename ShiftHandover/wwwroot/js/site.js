@@ -5,6 +5,25 @@
     // else: do nothing (stay on page)
 }
 
+function confirmClaimShift(shiftId) {
+    if (confirm('Are you sure you want to claim this shift?')) {
+        fetch(`/Shift/Claim/${shiftId}`, {
+            method: 'POST',
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Shift claimed successfully!');
+                    location.reload();
+                } else {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error.message);
+                location.reload();
+            });
+    }
+}
 
 function confirmSubmitLog() {
     const type = document.querySelector('select[name="Type"]').value;

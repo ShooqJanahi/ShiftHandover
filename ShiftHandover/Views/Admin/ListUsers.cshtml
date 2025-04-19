@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<!-- Button to navigate to the Add New User form -->
 <div class="mb-3 text-end">
     <a href="/Admin/AddUser" class="btn btn-primary">Add New User</a>
 </div>
@@ -15,7 +16,7 @@
     <!-- Search Bar -->
     <form asp-action="ListUsers" method="get" class="mb-4 w-100">
         <div class="d-flex justify-content-center" style="max-width: 900px; margin: 0 auto;">
-            <input type="text" name="searchTerm" class="form-control mr-2" placeholder="Search users..." value="@Context.Request.Query["searchTerm"]" />
+            <input type="text" name="searchTerm" class="form-control mr-2" placeholder="Search users..." value="@Context.Request.Query["searchTerm"]" /> <!-- Textbox to enter search term -->
             <button type="submit" class="btn btn-search mr-2">Search</button>
             <a href="/Admin/ListUsers" class="btn btn-secondary">Clear</a>
         </div>
@@ -23,6 +24,7 @@
 
     <hr />
 
+    <!-- Display a warning if no users are found -->
     @if (!Model.Any())
     {
         <div class="alert alert-warning text-center">
@@ -31,6 +33,7 @@
     }
     else
     {
+        <!-- Table showing list of users -->
         <div class="table-responsive">
             <table class="table table-hover table-striped">
                 <thead class="thead-dark">
@@ -48,18 +51,20 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Loop through each user in the list -->
                     @foreach (var user in Model)
                     {
                         <tr>
-                            <td>@user.UserId</td>
-                            <td>@user.FirstName</td>
-                            <td>@user.LastName</td>
-                            <td>@user.Username</td>
-                            <td>@user.Email</td>
-                            <td>@user.PhoneNumber</td>
-                            <td>@user.Department</td>
-                            <td>@user.RoleTitle</td>
+                            <td>@user.UserId</td> <!-- Display User ID -->
+                            <td>@user.FirstName</td> <!-- Display First Name -->
+                            <td>@user.LastName</td> <!-- Display Last Name -->
+                            <td>@user.Username</td> <!-- Display Username -->
+                            <td>@user.Email</td> <!-- Display Email -->
+                            <td>@user.PhoneNumber</td> <!-- Display Phone Number -->
+                            <td>@user.Department</td> <!-- Display Department -->
+                            <td>@user.RoleTitle</td> <!-- Display Role Title -->
                             <td>
+                                <!-- Display Active/Inactive Badge based on user status -->
                                 @if (user.IsActive)
                                 {
                                     <span class="badge bg-success">Active</span>
@@ -70,8 +75,9 @@
                                 }
                             </td>
 
+                            <!-- Action buttons (View button - to see users details) -->
                             <td>
-                                <a class="btn btn-primary btn-sm" asp-controller="Admin" asp-action="ViewUser" asp-route-id="@user.UserId">View</a> <!-- NEW -->
+                                <a class="btn btn-primary btn-sm" asp-controller="Admin" asp-action="ViewUser" asp-route-id="@user.UserId">View</a> 
                             </td>
 
                         </tr>

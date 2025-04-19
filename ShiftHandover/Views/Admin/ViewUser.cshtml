@@ -7,7 +7,8 @@
 
 <div class="container-fluid">
     <div class="row content">
-        <!-- Sidebar -->
+
+        <!-- Sidebar Section -->
         <div class="col-sm-3 sidenav hidden-xs">
             <h2>Admin Panel</h2>
             <ul class="nav nav-pills nav-stacked flex-column">
@@ -23,7 +24,7 @@
             </ul>
         </div>
 
-        <!-- Main Content -->
+        <<!-- Main Content Section -->
         <div class="col-sm-9">
             <div class="well" id="userDetails">
                 <h2>User Details</h2>
@@ -56,6 +57,7 @@
 
                     <dt class="col-sm-3">Status:</dt>
                     <dd class="col-sm-9">
+                        <!-- Badge showing Active or Inactive based on IsActive -->
                         @if (Model.IsActive)
                         {
                             <span class="badge bg-success">Active</span>
@@ -67,15 +69,18 @@
                     </dd>
                 </dl>
 
+                <!-- Action Buttons for Activating/Deactivating User -->
                 <div class="text-center mt-3">
                     @if (Model.IsActive)
                     {
+                        <!-- Deactivate User Button -->
                         <form asp-action="DeactivateUser" method="post" asp-route-id="@Model.UserId" style="display:inline-block;">
                             <button type="submit" class="btn btn-danger create-btn">Deactivate User</button>
                         </form>
                     }
                     else
                     {
+                        <!-- Activate User Button -->
                         <form asp-action="ActivateUser" method="post" asp-route-id="@Model.UserId" style="display:inline-block;">
                             <button type="submit" class="btn btn-success create-btn">Activate User</button>
                         </form>
@@ -87,20 +92,22 @@
            
             </div>
 
-            <!-- Keep the Generate Report button -->
+            <!-- Generate Report Section -->
             <div class="well" id="generateReport">
                 <h4>Generate PDF Report</h4>
                 <p>Download a detailed user report (future feature).</p>
                 <form asp-action="GenerateUserReport" method="post" asp-route-id="@Model.UserId">
-                    <button type="submit" class="btn btn-info">Download Report</button>
+                    <button type="submit" class="btn btn-info">Download Report</button> <!-- Button to generate report -->
                 </form>
             </div>
-            <!-- User Shifts Section (instead of shift logs) -->
+
+            <!-- User's Shift History Section (instead of shift logs) -->
             <div class="well" id="userShifts">
                 <h4>User's Shift History</h4>
 
                 @if (ViewBag.UserShifts != null && ((List<ShiftHandover.Models.Shift>)ViewBag.UserShifts).Any())
                 {
+                    <!-- If user has shifts, display them in a table -->
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -118,12 +125,13 @@
                                 @foreach (var shift in (List<ShiftHandover.Models.Shift>)ViewBag.UserShifts)
                                 {
                                     <tr>
-                                        <td>@shift.Id</td>
-                                        <td>@shift.ShiftType</td>
-                                        <td>@shift.Location</td>
-                                        <td>@shift.StartTime.ToString("g")</td>
-                                        <td>@(shift.EndTime.HasValue ? shift.EndTime.Value.ToString("g") : "N/A")</td>
+                                        <td>@shift.Id</td> <!-- Display Shift ID -->
+                                        <td>@shift.ShiftType</td>  <!-- Display Shift Type -->
+                                        <td>@shift.Location</td> <!-- Display Location -->
+                                        <td>@shift.StartTime.ToString("g")</td> <!-- Start Time -->
+                                        <td>@(shift.EndTime.HasValue ? shift.EndTime.Value.ToString("g") : "N/A")</td> <!-- End Time or N/A -->
                                         <td>
+                                            <!-- Display Shift Status -->
                                             @if (shift.IsClosed)
                                             {
                                                 <span class="badge bg-secondary">Closed</span>
@@ -138,6 +146,7 @@
                                             }
                                         </td>
                                         <td>
+                                            <!-- Button to View individual shifts -->
                                             <a class="btn btn-primary btn-sm" asp-controller="Shift" asp-action="ViewShift" asp-route-id="@shift.Id">View</a>
                                         </td>
                                     </tr>
@@ -148,6 +157,7 @@
                 }
                 else
                 {
+                    <!-- If user has no shifts assigned -->
                     <div class="alert alert-info" role="alert">
                         No shifts assigned to this user yet.
                     </div>

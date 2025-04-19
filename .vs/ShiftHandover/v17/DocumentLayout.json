@@ -3,6 +3,69 @@
   "WorkspaceRootPath": "D:\\ShiftHandover\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\views\\shift\\listavailableshifts.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\views\\shift\\listavailableshifts.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\controllers\\shiftcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\controllers\\shiftcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/ShiftHandoverDB/True/SqlTable/dbo.Shifts.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\models\\shiftlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\models\\shiftlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\models\\shift.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\models\\shift.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\models\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\models\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\models\\errorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\models\\errorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\models\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\models\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\models\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\models\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\helpers\\sendemail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\helpers\\sendemail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\helpers\\passwordhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\helpers\\passwordhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\views\\dashboard\\admindashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\views\\dashboard\\admindashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -11,24 +74,12 @@
       "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\wwwroot\\js\\charts.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\wwwroot\\js\\charts.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\views\\dashboard\\userdashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\views\\dashboard\\userdashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\ShiftHandover\\ShiftHandover\\Migrations\\20250418204356_CorrectUserDepartmentRelation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ShiftHandover\\Migrations\\20250418204356_CorrectUserDepartmentRelation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\ShiftHandover\\ShiftHandover\\Migrations\\20250418204314_MakeDescriptionNullable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -41,6 +92,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\ShiftHandover\\ShiftHandover\\Migrations\\20250418204206_MakeDescriptionNullable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ShiftHandover\\Migrations\\20250418204206_MakeDescriptionNullable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|d:\\shifthandover\\shifthandover\\migrations\\20250418204356_correctuserdepartmentrelation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CD3CBB6-C2A4-4C3E-B172-4949FAB0538C}|ShiftHandover\\ShiftHandover.csproj|solutionrelative:shifthandover\\migrations\\20250418204356_correctuserdepartmentrelation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,37 +105,203 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "site.css",
-              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\css\\site.css",
-              "RelativeDocumentMoniker": "ShiftHandover\\wwwroot\\css\\site.css",
-              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\css\\site.css",
-              "RelativeToolTip": "ShiftHandover\\wwwroot\\css\\site.css",
-              "ViewState": "AgIAACYBAAAAAAAAAAAzwDYBAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-04-18T20:56:50.393Z",
+              "Title": "site.js",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\js\\site.js",
+              "RelativeDocumentMoniker": "ShiftHandover\\wwwroot\\js\\site.js",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\js\\site.js",
+              "RelativeToolTip": "ShiftHandover\\wwwroot\\js\\site.js",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAgwCEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-04-19T14:33:00.611Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ListAvailableShifts.cshtml",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Views\\Shift\\ListAvailableShifts.cshtml",
+              "RelativeDocumentMoniker": "ShiftHandover\\Views\\Shift\\ListAvailableShifts.cshtml",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Views\\Shift\\ListAvailableShifts.cshtml",
+              "RelativeToolTip": "ShiftHandover\\Views\\Shift\\ListAvailableShifts.cshtml",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAAAHEAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-19T14:32:43.711Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "dbo.Shifts [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/ShiftHandoverDB/True/SqlTable/dbo.Shifts.sql",
+              "ToolTip": "dbo.Shifts [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-04-19T14:28:34.446Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ShiftLog.cs",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Models\\ShiftLog.cs",
+              "RelativeDocumentMoniker": "ShiftHandover\\Models\\ShiftLog.cs",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Models\\ShiftLog.cs",
+              "RelativeToolTip": "ShiftHandover\\Models\\ShiftLog.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAiwC4AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T14:14:00.688Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "ShiftController.cs",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Controllers\\ShiftController.cs",
+              "RelativeDocumentMoniker": "ShiftHandover\\Controllers\\ShiftController.cs",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Controllers\\ShiftController.cs",
+              "RelativeToolTip": "ShiftHandover\\Controllers\\ShiftController.cs",
+              "ViewState": "AgIAAB0CAAAAAAAAAAAgwD0CAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T11:56:32.831Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Shift.cs",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Models\\Shift.cs",
+              "RelativeDocumentMoniker": "ShiftHandover\\Models\\Shift.cs",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Models\\Shift.cs",
+              "RelativeToolTip": "ShiftHandover\\Models\\Shift.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAYwDoAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T14:09:07.762Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LoginViewModel.cs",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Models\\LoginViewModel.cs",
+              "RelativeDocumentMoniker": "ShiftHandover\\Models\\LoginViewModel.cs",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Models\\LoginViewModel.cs",
+              "RelativeToolTip": "ShiftHandover\\Models\\LoginViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T14:08:21.254Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ErrorViewModel.cs",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Models\\ErrorViewModel.cs",
+              "RelativeDocumentMoniker": "ShiftHandover\\Models\\ErrorViewModel.cs",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Models\\ErrorViewModel.cs",
+              "RelativeToolTip": "ShiftHandover\\Models\\ErrorViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T14:08:19.588Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Department.cs",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Models\\Department.cs",
+              "RelativeDocumentMoniker": "ShiftHandover\\Models\\Department.cs",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Models\\Department.cs",
+              "RelativeToolTip": "ShiftHandover\\Models\\Department.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAABhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T14:07:02.092Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Models\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "ShiftHandover\\Models\\ApplicationDbContext.cs",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Models\\ApplicationDbContext.cs",
+              "RelativeToolTip": "ShiftHandover\\Models\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAA7wCEAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T14:02:28.13Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SendEmail.cs",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Helpers\\SendEmail.cs",
+              "RelativeDocumentMoniker": "ShiftHandover\\Helpers\\SendEmail.cs",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Helpers\\SendEmail.cs",
+              "RelativeToolTip": "ShiftHandover\\Helpers\\SendEmail.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAowDMAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T13:54:23.976Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "PasswordHelper.cs",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Helpers\\PasswordHelper.cs",
+              "RelativeDocumentMoniker": "ShiftHandover\\Helpers\\PasswordHelper.cs",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Helpers\\PasswordHelper.cs",
+              "RelativeToolTip": "ShiftHandover\\Helpers\\PasswordHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAB6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T13:51:54.045Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "ShiftHandover\\Controllers\\HomeController.cs",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "ShiftHandover\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T11:55:30.451Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "ShiftHandover\\Controllers\\AccountController.cs",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "ShiftHandover\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAIwIEAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T10:33:17.072Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "AdminController.cs",
               "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Controllers\\AdminController.cs",
               "RelativeDocumentMoniker": "ShiftHandover\\Controllers\\AdminController.cs",
               "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Controllers\\AdminController.cs",
               "RelativeToolTip": "ShiftHandover\\Controllers\\AdminController.cs",
-              "ViewState": "AgIAAEUBAAAAAAAAAAAAAGABAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAFkBAAAAAAAAAAAowGYBAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-18T20:54:28.267Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 18,
               "Title": "Charts.js",
               "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\js\\Charts.js",
               "RelativeDocumentMoniker": "ShiftHandover\\wwwroot\\js\\Charts.js",
@@ -88,25 +309,49 @@
               "RelativeToolTip": "ShiftHandover\\wwwroot\\js\\Charts.js",
               "ViewState": "AgIAABoAAAAAAAAAAAAywCwAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-04-18T20:46:00.709Z",
+              "WhenOpened": "2025-04-18T20:46:00.709Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Controllers\\DashboardController.cs",
+              "RelativeDocumentMoniker": "ShiftHandover\\Controllers\\DashboardController.cs",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Controllers\\DashboardController.cs",
+              "RelativeToolTip": "ShiftHandover\\Controllers\\DashboardController.cs",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAIwFkAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-18T20:45:41.27Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 17,
+              "Title": "site.css",
+              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "ShiftHandover\\wwwroot\\css\\site.css",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "ShiftHandover\\wwwroot\\css\\site.css",
+              "ViewState": "AgIAACYBAAAAAAAAAAAzwDYBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-04-18T20:56:50.393Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
               "Title": "AdminDashboard.cshtml",
               "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Views\\Dashboard\\AdminDashboard.cshtml",
               "RelativeDocumentMoniker": "ShiftHandover\\Views\\Dashboard\\AdminDashboard.cshtml",
-              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Views\\Dashboard\\AdminDashboard.cshtml*",
-              "RelativeToolTip": "ShiftHandover\\Views\\Dashboard\\AdminDashboard.cshtml*",
-              "ViewState": "AgIAABsAAAAAAAAAAAAYwCgAAABpAAAAAAAAAA==",
+              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Views\\Dashboard\\AdminDashboard.cshtml",
+              "RelativeToolTip": "ShiftHandover\\Views\\Dashboard\\AdminDashboard.cshtml",
+              "ViewState": "AgIAABsAAAAAAAAAAAAYwCwAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-18T20:45:49.375Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 19,
               "Title": "UserDashboard.cshtml",
               "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Views\\Dashboard\\UserDashboard.cshtml",
               "RelativeDocumentMoniker": "ShiftHandover\\Views\\Dashboard\\UserDashboard.cshtml",
@@ -114,25 +359,11 @@
               "RelativeToolTip": "ShiftHandover\\Views\\Dashboard\\UserDashboard.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-18T20:45:48.793Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-18T20:45:48.793Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "DashboardController.cs",
-              "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Controllers\\DashboardController.cs",
-              "RelativeDocumentMoniker": "ShiftHandover\\Controllers\\DashboardController.cs",
-              "ToolTip": "D:\\ShiftHandover\\ShiftHandover\\Controllers\\DashboardController.cs",
-              "RelativeToolTip": "ShiftHandover\\Controllers\\DashboardController.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAAYwFEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-18T20:45:41.27Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 23,
               "Title": "20250418204356_CorrectUserDepartmentRelation.cs",
               "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Migrations\\20250418204356_CorrectUserDepartmentRelation.cs",
               "RelativeDocumentMoniker": "ShiftHandover\\Migrations\\20250418204356_CorrectUserDepartmentRelation.cs",
@@ -140,12 +371,11 @@
               "RelativeToolTip": "ShiftHandover\\Migrations\\20250418204356_CorrectUserDepartmentRelation.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-18T20:43:56.864Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-18T20:43:56.864Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 20,
               "Title": "20250418204314_MakeDescriptionNullable.cs",
               "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Migrations\\20250418204314_MakeDescriptionNullable.cs",
               "RelativeDocumentMoniker": "ShiftHandover\\Migrations\\20250418204314_MakeDescriptionNullable.cs",
@@ -153,12 +383,11 @@
               "RelativeToolTip": "ShiftHandover\\Migrations\\20250418204314_MakeDescriptionNullable.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-18T20:43:14.728Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-18T20:43:14.728Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 21,
               "Title": "Users.cs",
               "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Models\\Users.cs",
               "RelativeDocumentMoniker": "ShiftHandover\\Models\\Users.cs",
@@ -166,12 +395,11 @@
               "RelativeToolTip": "ShiftHandover\\Models\\Users.cs",
               "ViewState": "AgIAABQAAAAAAAAAAAAiwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-18T20:42:18.923Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-18T20:42:18.923Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 22,
               "Title": "20250418204206_MakeDescriptionNullable.cs",
               "DocumentMoniker": "D:\\ShiftHandover\\ShiftHandover\\Migrations\\20250418204206_MakeDescriptionNullable.cs",
               "RelativeDocumentMoniker": "ShiftHandover\\Migrations\\20250418204206_MakeDescriptionNullable.cs",
@@ -179,8 +407,7 @@
               "RelativeToolTip": "ShiftHandover\\Migrations\\20250418204206_MakeDescriptionNullable.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-18T20:42:06.605Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-18T20:42:06.605Z"
             }
           ]
         }

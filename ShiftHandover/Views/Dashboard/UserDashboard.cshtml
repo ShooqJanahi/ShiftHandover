@@ -5,24 +5,28 @@
 
 <div class="container-fluid">
     <div class="row content">
+
+        <!-- Sidebar Section (Shift Panel) -->
         <div class="col-sm-3 sidenav hidden-xs">
             <h2>Shift Panel</h2>
             <ul class="nav nav-pills nav-stacked flex-column">
+
+                <!-- Link to list all available shifts that users can claim -->
                 <li class="nav-item">
                     <a class="btn" asp-area="" asp-controller="Shift" asp-action="ListAvailableShifts">Claim Shift</a>
                 </li>
+                <!-- Link to view the user's past shift history -->
                 <li class="nav-item">
                     <a class="btn" asp-area="" asp-controller="Shift" asp-action="ShiftHistory">Shift History</a>
                 </li>
-
-
-
             </ul>
         </div>
 
+        <!-- Main Content Section -->
         <div class="col-sm-9">
             <div class="well" id="calendarWell">
                 <h4>Shift Calendar</h4>
+                <!-- Placeholder for shift calendar  -->
                 <div id="calendar"></div>
             </div>
 

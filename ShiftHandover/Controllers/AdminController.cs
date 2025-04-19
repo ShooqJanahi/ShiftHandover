@@ -7,20 +7,22 @@ using ShiftHandover.Models;
 using ShiftHandover.Helpers;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ShiftHandover.Controllers
 {
-    
+    // Controller managing admin-related functionalities
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
 
+        // Constructor - inject the application's DbContext
         public AdminController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-
+        // Private helper method to check if the current user is an Admin
         private bool IsAdmin()
         {
             var username = HttpContext.Session.GetString("Username");
@@ -28,13 +30,13 @@ namespace ShiftHandover.Controllers
 
             if (string.IsNullOrEmpty(username))
             {
-                // Not logged in
+                // User is not logged in
                 return false;
             }
 
             if (role != "Admin")
             {
-                // Logged in but wrong role
+                // User is logged in but doesn't have Admin role
                 TempData["ErrorMessage"] = "You do not have the required privileges.";
                 return false;
             }
@@ -43,8 +45,8 @@ namespace ShiftHandover.Controllers
         }
 
 
-
         // GET: Admin/AddUser
+        //Display the Add User form
         public IActionResult AddUser()
         {
             if (!IsAdmin())
@@ -52,25 +54,25 @@ namespace ShiftHandover.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            ViewBag.Departments = _context.Departments.ToList(); // ✅ fetch departments
+            ViewBag.Departments = _context.Departments.ToList(); // Load departments list for dropdown
             return View();
         }
 
 
-
         // POST: Admin/AddUser
+        // Handle form submission for creating a user
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddUser(User model)
         {
-            ViewBag.Departments = _context.Departments.ToList(); // ✅ Always load departments before validation
+            ViewBag.Departments = _context.Departments.ToList(); // Always load departments in case form reloads due to error
 
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            // 🔥 Check uniqueness
+            // Validate uniqueness of username, email, and phone number
             if (_context.Users.Any(u => u.Username == model.Username))
             {
                 ModelState.AddModelError("Username", "Username already exists.");
@@ -87,33 +89,37 @@ namespace ShiftHandover.Controllers
                 return View(model);
             }
 
-            // 🔥 Store the plain password temporarily
+            // Temporarily store plain password for emailing
             string plainPassword = model.PasswordHash;
 
-            // ✅ Password Validation
-            var password = model.PasswordHash;
+            // Validate password format (uppercase, lowercase, number, special character, min 8 chars)
+           
             var passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
 
-            if (!System.Text.RegularExpressions.Regex.IsMatch(password, passwordPattern))
+            if (!System.Text.RegularExpressions.Regex.IsMatch(model.PasswordHash, passwordPattern))
             {
                 ModelState.AddModelError("PasswordHash", "Password must be at least 8 characters, include uppercase, lowercase, number, and special character.");
                 return View(model);
             }
 
-            // ✅ Hash password before saving
+            // Hash password before saving into the database
             model.PasswordHash = PasswordHelper.Hash(model.PasswordHash);
 
-            model.IsActive = true;
+            model.IsActive = true; // Set new users as active by default
 
+            // Save the user
             _context.Users.Add(model);
             _context.SaveChanges();
 
+            // Send credentials to the user via email
             SendEmailHelper.Send(model.Email, model.Username, plainPassword);
 
             TempData["SuccessMessage"] = "User created successfully and credentials sent!";
             return RedirectToAction("AddUser");
         }
 
+        //Display all users, optionally filtered by search term or status
+        // GET: Admin/ListUsers
         public IActionResult ListUsers(string searchTerm, string statusFilter)
         {
             if (!IsAdmin())
@@ -121,12 +127,13 @@ namespace ShiftHandover.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            // Fetch users with their departments
             var users = _context.Users
             .Include(u => u.Department) 
             .ToList();
 
 
-            // 🔥 Apply search
+            // Apply search functionality
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 searchTerm = searchTerm.ToLower();
@@ -142,7 +149,7 @@ namespace ShiftHandover.Controllers
                 ).ToList();
             }
 
-            // 🔥 Apply status filter
+            // Apply status (Active/Inactive) filter
             if (!string.IsNullOrEmpty(statusFilter))
             {
                 if (statusFilter == "Active")
@@ -154,6 +161,8 @@ namespace ShiftHandover.Controllers
             return View(users);
         }
 
+        //View user details including their shifts
+        // GET: Admin/ViewUser
         public IActionResult ViewUser(int id)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == id);
@@ -163,6 +172,7 @@ namespace ShiftHandover.Controllers
                 return NotFound();
             }
 
+            // Fetch shifts assigned to the user
             var userShifts = _context.Shifts
                             .Where(s => s.SupervisorId == user.UserId.ToString())
                             .OrderByDescending(s => s.StartTime)
@@ -173,6 +183,8 @@ namespace ShiftHandover.Controllers
             return View(user);
         }
 
+        // POST: Admin/GenerateUserReport
+        //Generate a detailed PDF report for a user
         [HttpPost]
         public IActionResult GenerateUserReport(int id)
         {
@@ -191,6 +203,7 @@ namespace ShiftHandover.Controllers
                 .OrderByDescending(log => log.LogTime)
                 .ToList();
 
+            // Building the PDF document using QuestPDF
             var document = Document.Create(container =>
             {
                 container.Page(page =>
@@ -207,7 +220,7 @@ namespace ShiftHandover.Controllers
                     {
                         col.Spacing(15);
 
-                        // User Info
+                        // User Information
                         col.Item().Border(1).BorderColor("#007ACC").Padding(10).Column(innerCol =>
                         {
                             innerCol.Item().Text($"User ID: {user.UserId}");
@@ -220,7 +233,7 @@ namespace ShiftHandover.Controllers
                             innerCol.Item().Text($"Status: {(user.IsActive ? "Active" : "Inactive")}");
                         });
 
-                        // Shifts Section
+                        // Shifts History Section
                         col.Item().PaddingTop(20).Text("Shifts History").FontSize(18).Bold().FontColor("#007ACC");
 
                         if (shifts.Any())
@@ -265,7 +278,7 @@ namespace ShiftHandover.Controllers
                             col.Item().Text("No shifts assigned to this user.").Italic();
                         }
 
-                        // Logs Section
+                        // Shift Logs Section
                         col.Item().PaddingTop(20).Text("Shift Logs").FontSize(18).Bold().FontColor("#007ACC");
 
                         if (shiftLogs.Any())
@@ -311,14 +324,17 @@ namespace ShiftHandover.Controllers
                 });
             });
 
+            // Generate PDF and return as file download
             var pdfBytes = document.GeneratePdf();
 
             return File(pdfBytes, "application/pdf", $"UserReport_{user.Username}.pdf");
 
-            // Helper
+            // Helper for table cell styling
             IContainer CellStyle(IContainer container) => container.PaddingVertical(5).PaddingHorizontal(3);
         }
 
+        // POST: Admin/DeactivateUser
+        //Set user as inactive
         [HttpPost]
         public IActionResult DeactivateUser(int id)
         {
@@ -333,6 +349,8 @@ namespace ShiftHandover.Controllers
             return RedirectToAction("ViewUser", new { id = id });
         }
 
+        // POST: Admin/ActivateUser
+        //Set user as active
         [HttpPost]
         public IActionResult ActivateUser(int id)
         {

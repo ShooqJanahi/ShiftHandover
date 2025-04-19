@@ -6,45 +6,55 @@
 
 <h2>Create New Shift</h2>
 
+<!-- Display success message if shift creation was successful -->
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success">@TempData["SuccessMessage"]</div>
 }
 
+<!-- Form to create a new shift -->
 <form asp-action="AddShift" method="post" onsubmit="return confirmSubmitShift();">
+
+    <!-- Location Input Field -->
     <div class="form-group">
         <label asp-for="Location"></label>
         <input asp-for="Location" class="form-control" />
-        <span asp-validation-for="Location" class="text-danger"></span>
+        <span asp-validation-for="Location" class="text-danger"></span> <!-- Display validation error -->
     </div>
 
+    <!-- Start Time Input Field -->
     <div class="form-group">
         <label asp-for="StartTime"></label>
         <input asp-for="StartTime" class="form-control" type="datetime-local" />
-        <span asp-validation-for="StartTime" class="text-danger"></span>
+        <span asp-validation-for="StartTime" class="text-danger"></span> <!-- Display validation error -->
     </div>
 
+    <!-- End Time Input Field -->
     <div class="form-group">
         <label asp-for="EndTime"></label>
         <input asp-for="EndTime" class="form-control" type="datetime-local" />
-        <span asp-validation-for="EndTime" class="text-danger"></span>
+        <span asp-validation-for="EndTime" class="text-danger"></span> <!-- Display validation error -->
     </div>
 
+    <!-- Notes Textarea Field -->
     <div class="form-group">
         <label asp-for="Notes"></label>
         <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
-        <span asp-validation-for="Notes" class="text-danger"></span>
+        <span asp-validation-for="Notes" class="text-danger"></span>  <!-- Display validation error -->
     </div>
 
+    <!-- Submit Button -->
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
 
 @section Scripts {
     <script>
+         // Function to confirm before submitting the form
         function confirmSubmitShift() {
             return confirm("Are you sure you want to create this shift?");
         }
 
+        // When page loads, if a success alert exists, reset the form
         window.addEventListener('load', function () {
             const successAlert = document.querySelector('.alert-success');
             if (successAlert) {
@@ -54,6 +64,7 @@
         });
     </script>
 
+    <!-- Partial view to include client-side validation scripts -->
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

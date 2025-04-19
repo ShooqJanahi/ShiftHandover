@@ -7,11 +7,13 @@
 
 <div class="container-fluid">
     <div class="row content">
+
+        <!-- Sidebar for Shift Actions -->
         <div class="col-sm-3 sidenav hidden-xs">
             <h2>Shift Panel</h2>
             <ul class="nav nav-pills nav-stacked flex-column">
 
-                <!-- Dashboard button -->
+                <!-- Dashboard button based on Role -->
                 <li class="nav-item">
                     @if (Context.Session.GetString("Role") == "Admin")
                     {
@@ -23,23 +25,17 @@
                     }
                 </li>
 
-                <!-- Generate Report button -->
+                <!-- Buttons for Claimed and Active Shifts -->
                 @if (Model.IsClaimed && !Model.IsClosed)
                 {
+               
                     <li class="nav-item">
-                        <form asp-action="GenerateReport" method="post" asp-route-id="@Model.Id">
-                            <button type="submit" class="btn btn-warning w-100 my-1">Generate Report</button>
-                        </form>
-                    </li>
+                        <!-- Log shift activity -->
+                     <a class="btn" href="#logShift">Log Shift Activity</a>
+                      </li>
                 }
 
-                <!-- Log Activity button -->
-                @if (Model.IsClaimed && !Model.IsClosed)
-                {
-                    <li class="nav-item">
-                        <a class="btn" href="#logShift">Log Shift Activity</a>
-                    </li>
-                }
+               
 
                 <!-- Download Report for Closed Shifts -->
                 @if (Model.IsClosed)
@@ -55,11 +51,13 @@
 
         </div>
 
+        <!-- Main Content (Shift Details) -->
         <div class="col-sm-9">
             <div class="well" id="claimShift">
                 <h2>Shift Details</h2>
                 <hr />
 
+                <!-- Shift information displayed using Definition List -->
                 <dl class="row">
                     <dt class="col-sm-3">Shift ID:</dt>
                     <dd class="col-sm-9">@Model.Id</dd>
@@ -89,7 +87,7 @@
                     <dd class="col-sm-9">@((Model.IsClosed) ? "Closed" : (Model.IsClaimed ? "Claimed" : "Unclaimed"))</dd>
                 </dl>
 
-                @* Only show the Close Shift button if shift is Claimed and not Closed *@
+                <!-- Show Close Shift button if shift is claimed and still open -->
                 @if (Model.IsClaimed && !Model.IsClosed)
                 {
                     <h4>Close Shift</h4>
@@ -97,16 +95,15 @@
                     <form id="closeShiftForm" asp-action="CloseShift" method="post" asp-route-id="@Model.Id">
                         <button type="button" class="btn btn-warning" onclick="confirmCloseShift()">Close My Shift</button>
                     </form>
-
-
                 }
             </div>
 
-            @* Show Log Activity Form only if claimed and not closed *@
+            <!-- Log Shift Activity Form, available only for active claimed shifts -->
             @if (Model.IsClaimed && !Model.IsClosed)
             {
                 <div class="well" id="logShift">
                     <h4>Log Shift Activity</h4>
+
                     @if (TempData["LogError"] != null)
                     {
                         <div class="alert alert-danger" role="alert">
@@ -116,7 +113,7 @@
 
                     <p>Log accidents, incidents, and manpower details.</p>
                     <form asp-action="LogShift" asp-route-id="@Model.Id" method="post" id="logShiftForm">
-
+                        <!-- Type selection -->
                         <div class="form-group">
                             <label for="type">Type</label>
                             <select class="form-control" name="Type" required>
@@ -127,6 +124,7 @@
                             </select>
                         </div>
 
+                        <!-- Severity selection -->
                         <div class="form-group">
                             <label for="severity">Severity</label>
                             <select class="form-control" name="Severity" required>
@@ -137,6 +135,7 @@
                             </select>
                         </div>
 
+                        <!-- Involved Person / Manpower Input -->
                         <div class="form-group">
                             <label for="involvedPerson">Involved Person / Manpower</label>
                             <input type="text" class="form-control" name="InvolvedPerson" id="involvedPersonInput" list="usernamesList" />
@@ -151,19 +150,21 @@
                             </small>
                         </div>
 
-
-
+                        <!-- Description -->
                         <div class="form-group">
                             <label for="description">Description</label>
                             <textarea class="form-control" name="Description" required></textarea>
                         </div>
+
+                        <!-- Log Time input with validation within shift time -->
                         <div class="form-group">
                             <label for="logTime">Time</label>
                             <input type="datetime-local" class="form-control" name="LogTime"
                                    min="@Model.StartTime.ToString("yyyy-MM-ddTHH:mm")"
                                    max="@Model.EndTime?.ToString("yyyy-MM-ddTHH:mm")" required />
-
                         </div>
+
+                        <!-- Submit Log Button -->
                         <button type="button" class="btn btn-success" onclick="confirmSubmitLog()">Submit Log</button>
 
                     </form>
@@ -172,7 +173,7 @@
                 </div>
             }
 
-            @* Show Generate Report only if shift is Closed *@
+            <!-- Generate Report Section for Closed Shifts -->
             @if (Model.IsClosed)
             {
                 <div class="well" id="generateReport">
@@ -188,6 +189,7 @@
     </div>
 </div>
 
+<!-- Shift Activity Logs Section -->
 @if (ViewBag.ShiftLogs != null && ((List<ShiftHandover.Models.ShiftLog>)ViewBag.ShiftLogs).Any())
 {
     <div class="well" id="shiftLogs">
@@ -225,6 +227,7 @@
 }
 else
 {
+    <!-- No Activity Logs Message -->
     <div class="alert alert-info" role="alert">
         No activity logs recorded for this shift yet.
     </div>
