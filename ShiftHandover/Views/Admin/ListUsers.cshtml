@@ -22,7 +22,8 @@
         </div>
     </form>
 
-    <hr />
+    <hr class="users-divider" />
+
 
     <!-- Display a warning if no users are found -->
     @if (!Model.Any())
@@ -61,7 +62,7 @@
                             <td>@user.Username</td> <!-- Display Username -->
                             <td>@user.Email</td> <!-- Display Email -->
                             <td>@user.PhoneNumber</td> <!-- Display Phone Number -->
-                            <td>@user.Department</td> <!-- Display Department -->
+                            <td>@(user.Department != null ? user.Department.DepartmentName : "N/A")</td> <!-- Display Department -->
                             <td>@user.RoleTitle</td> <!-- Display Role Title -->
                             <td>
                                 <!-- Display Active/Inactive Badge based on user status -->

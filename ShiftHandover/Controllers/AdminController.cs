@@ -161,11 +161,13 @@ namespace ShiftHandover.Controllers
             return View(users);
         }
 
-        //View user details including their shifts
+        // View user details including their shifts
         // GET: Admin/ViewUser
         public IActionResult ViewUser(int id)
         {
-            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+            var user = _context.Users
+                .Include(u => u.Department)          // include Department
+                .FirstOrDefault(u => u.UserId == id);
 
             if (user == null)
             {
@@ -174,14 +176,15 @@ namespace ShiftHandover.Controllers
 
             // Fetch shifts assigned to the user
             var userShifts = _context.Shifts
-                            .Where(s => s.SupervisorId == user.UserId.ToString())
-                            .OrderByDescending(s => s.StartTime)
-                            .ToList();
+                .Where(s => s.SupervisorId == user.UserId.ToString())
+                .OrderByDescending(s => s.StartTime)
+                .ToList();
 
             ViewBag.UserShifts = userShifts;
 
             return View(user);
         }
+
 
         // POST: Admin/GenerateUserReport
         //Generate a detailed PDF report for a user
@@ -228,7 +231,11 @@ namespace ShiftHandover.Controllers
                             innerCol.Item().Text($"Username: {user.Username}");
                             innerCol.Item().Text($"Email: {user.Email}");
                             innerCol.Item().Text($"Phone: {user.PhoneNumber}");
-                            innerCol.Item().Text($"Department: {user.Department}");
+
+                            innerCol.Item().Text(
+                             $"Department: {user.Department?.DepartmentName ?? "N/A"}"
+                             );
+
                             innerCol.Item().Text($"Role: {user.RoleTitle}");
                             innerCol.Item().Text($"Status: {(user.IsActive ? "Active" : "Inactive")}");
                         });

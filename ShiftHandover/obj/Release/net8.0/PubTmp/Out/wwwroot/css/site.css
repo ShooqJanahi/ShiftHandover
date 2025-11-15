@@ -1,0 +1,328 @@
+﻿html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+
+
+
+
+.sidenav {
+    background-color: #f1f1f1;
+    height: 100%;
+}
+
+@media screen and (max-width: 767px) {
+    .row.content {
+        height: auto;
+    }
+}
+
+
+/*Added Style*/
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+body {
+    flex: 1 0 auto;
+   
+}
+
+main {
+    flex: 1 0 auto;
+    padding-top: 20px;
+    padding-bottom: 80px; /* enough space for footer */
+}
+
+footer {
+    flex-shrink: 0;
+    background-color: #ffffff;
+    text-align: center;
+    padding: 5px 0;
+    font-size: 13px;
+    color: #6c757d;
+    border-top: 1px solid #ddd;
+}
+
+.footer-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+.login-btn {
+    width: 200px; /* stretch width */
+    padding: 10px 0; /* make it slightly taller */
+    font-weight: 600; /* make text a bit bolder */
+    font-size: 16px; /* optional: bigger font */
+}
+
+
+
+
+
+
+
+
+.navbar-default {
+    background-color: #A30020;
+    border: none;
+}
+
+    .navbar-default .navbar-nav > li > a {
+        color: white;
+        font-weight: 500;
+    }
+
+    .navbar-default .navbar-brand {
+        color: white;
+        font-weight: bold;
+    }
+
+.custom-nav-link {
+    color: #555;
+    margin-right: 15px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    .custom-nav-link:hover {
+        background-color: #dc3545; /* Bootstrap danger color */
+        color: white;
+        text-decoration: none;
+    }
+
+.custom-logout-btn {
+    margin-left: 15px;
+    padding: 8px 15px;
+    font-weight: 500;
+    background: none;
+    border: none;
+    color: #555;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .custom-logout-btn:hover {
+        background-color: #dc3545;
+        color: white;
+        text-decoration: none;
+    }
+
+
+
+/* Navbar */
+.navbar {
+    background-color: white;
+    padding: 0.5rem 1rem;
+}
+
+/* Highlight full nav link on hover */
+.nav-item:hover .nav-link {
+    background-color: #dc3545;
+    color: white;
+    border-radius: 5px;
+}
+
+
+
+
+/* Shift Panel Styles */
+.sidenav h2 {
+    color: black; /* Keep title black */
+    margin-bottom: 20px;
+}
+
+.sidenav .nav-item {
+    margin-bottom: 10px; /* Space between buttons */
+}
+
+.sidenav .btn {
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    background-color: #A30020; /* Dark Red */
+    border: none;
+    color: white; /* Make font color white */
+}
+.sidenav .btn:hover {
+        background-color: #7a0018; /* Darker red on hover */
+        color: #fff; /* Make text white if it’s not already */
+}
+
+
+/*Shift Schedule*/
+#calendar {
+    background-color: white;
+    min-height: 300px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+.container {
+    padding-top: 40px;
+    padding-bottom: 1px; /* Give more space for footer not to overlap */
+    
+}
+
+
+/* Table improvements */
+.table thead {
+    background-color: #A30020; /* Dark Red Color */
+    color: white;
+}
+
+/* Table improvements */
+.table {
+    background-color: white;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    max-width: 1200px;
+    width: 100%
+    margin: 0 auto;
+}
+
+.table tbody tr:hover {
+        background-color: #f1f1f1;
+}
+
+.input-group {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+/* Badge Styling */
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: black;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #A30020 !important; /* <-- ADD !important */
+    border: none !important;
+    color: white !important;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #7a0018 !important; /* <-- ADD !important */
+        color: white !important;
+    }
+
+.btn-search {
+    background-color: #A30020;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+}
+
+    .btn-search:hover {
+        background-color: #7a0018; /* Slightly darker on hover */
+    }
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+}
+
+    .btn-secondary:hover {
+        background-color: #565e64;
+    }
+
+
+/* Responsive */
+@media (max-width: 576px) {
+    .form-inline {
+        flex-direction: column;
+    }
+
+        .form-inline .form-group,
+        .form-inline .btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .form-inline {
+        flex-direction: column;
+    }
+
+        .form-inline .form-group,
+        .form-inline .btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+}
+
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+
+.nav-link.active {
+    background-color: #dc3545;
+    color: white;
+    border-radius: 5px;
+}
+
+/*Hide Shift Panel on small screens*/
+@media (max-width: 767px) {
+    .sidenav {
+        display: none;
+    }
+}
+
+.well {
+    background-color: #f8f9fa; /* Light grey background */
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.create-btn {
+    width: 200px; /* stretch width */
+    padding: 10px 0; /* make it slightly taller */
+    font-weight: 600; /* make text a bit bolder */
+    font-size: 16px; /* slightly bigger text */
+}
+
+

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ShiftHandover.Models.Shift>
 
 @{
-    ViewBag.Title = "Shift History";
+    ViewBag.Title = "My Shifts";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,13 +10,40 @@
     <h2 class="mb-4 text-center">My Shift Activity History</h2>
 
     <!-- Search Bar for filtering shifts -->
-    <form asp-action="ShiftHistory" method="get" class="mb-4 w-100">
-        <div class="d-flex justify-content-center" style="max-width: 900px; margin: 0 auto;">
-            <input type="text" name="searchTerm" class="form-control mr-2" placeholder="Search shifts..." value="@Context.Request.Query["searchTerm"]" /> <!-- Maintain search input value -->
-            <button type="submit" class="btn btn-search mr-2">Search</button>
-            <a href="/Shift/ShiftHistory" class="btn btn-secondary">Clear</a>
-        </div>
-    </form>
+   <form method="get" class="d-flex justify-content-center mb-3" style="max-width: 900px; margin: 0 auto;">
+    <input type="text" name="searchTerm" class="form-control me-2"
+           placeholder="Search shifts..." value="@Context.Request.Query["searchTerm"]" />
+
+        <select name="statusFilter" class="form-select me-2" style="max-width: 160px;">
+            <option value="">All</option>
+
+            @* Active option *@
+            @if (Context.Request.Query["statusFilter"] == "Active")
+            {
+                <option value="Active" selected>Active</option>
+            }
+            else
+            {
+                <option value="Active">Active</option>
+            }
+
+            @* Closed option *@
+            @if (Context.Request.Query["statusFilter"] == "Closed")
+            {
+                <option value="Closed" selected>Closed</option>
+            }
+            else
+            {
+                <option value="Closed">Closed</option>
+            }
+        </select>
+
+
+
+    <button type="submit" class="btn btn-search me-2">Search</button>
+    <a href="/Shift/ShiftHistory" class="btn btn-secondary">Clear</a>
+</form>
+
 
     <hr />
 

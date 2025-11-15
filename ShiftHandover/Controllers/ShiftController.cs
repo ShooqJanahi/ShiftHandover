@@ -26,26 +26,28 @@ public class ShiftController : Controller
     public IActionResult GetShifts()
     {
         var username = HttpContext.Session.GetString("Username");
+        var role = HttpContext.Session.GetString("Role");
 
-        if (string.IsNullOrEmpty(username))
-        {
-            return Unauthorized(); // User is not logged in
-        }
+        // Make sure only logged-in supervisors can call this
+        if (string.IsNullOrEmpty(username) || role != "Supervisor")
+            return Unauthorized();
 
+        // Only this supervisor's claimed shifts
         var shifts = _context.Shifts
-            .Where(s => s.SupervisorName == username && s.IsClaimed) // ✅ Only the shifts claimed by this user
+            .Where(s => s.SupervisorName == username && s.IsClaimed)   // ✅ claimed by this user
             .Select(s => new
             {
                 id = s.Id,
                 title = s.ShiftType + " Shift - " + s.Location,
-                start = s.StartTime.ToString("s"), // ISO 8601 format
-                end = s.EndTime.HasValue ? s.EndTime.Value.ToString("s") : null,
-                color = s.IsClosed ? "#6c757d" : "#28a745" // Grey if closed, Green if open
+                start = s.StartTime.ToString("yyyy-MM-ddTHH:mm:ss"),    // ISO for FullCalendar
+                end = s.EndTime.HasValue ? s.EndTime.Value.ToString("yyyy-MM-ddTHH:mm:ss") : null,
+                color = s.IsClosed ? "#6c757d" : "#28a745"               // grey if closed, green if open
             })
             .ToList();
 
         return Json(shifts);
     }
+
 
     // GET: /Shift/ViewShift/{id}
     // Displays detailed information about a specific shift
@@ -347,38 +349,46 @@ public class ShiftController : Controller
     }
 
     // GET: /Shift/ShiftHistory
-    // Shows the Supervisor's past (closed) shifts, with optional search
+    // Shows the Supervisor's shifts (claimed), with optional search + status filter
     [HttpGet]
-    public IActionResult ShiftHistory(string searchTerm)
+    public IActionResult ShiftHistory(string searchTerm, string statusFilter)
     {
         var username = HttpContext.Session.GetString("Username");
         var role = HttpContext.Session.GetString("Role");
 
         if (string.IsNullOrEmpty(username))
-        {
-            // User is not logged in
             return RedirectToAction("Login", "Account");
-        }
 
         if (role != "Supervisor")
         {
-            // Only Supervisors can access shift history
             TempData["ErrorMessage"] = "You are not authorized to access Shift History.";
             return RedirectToAction("Login", "Account");
         }
 
-        // Fetch closed shifts for this Supervisor
-        var shifts = _context.Shifts
-            .Where(s => s.SupervisorName == username && s.IsClosed)
-            .OrderByDescending(s => s.StartTime)
-            .ToList(); // Load into memory first
+        // 1) Base query in DB: all claimed shifts for this supervisor
+        var query = _context.Shifts
+            .Where(s => s.SupervisorName == username && s.IsClaimed);
 
-        // In-memory search filtering
+        // 2) Status filter (still in DB)
+        if (!string.IsNullOrEmpty(statusFilter))
+        {
+            if (statusFilter == "Active")
+                query = query.Where(s => !s.IsClosed);
+            else if (statusFilter == "Closed")
+                query = query.Where(s => s.IsClosed);
+        }
+
+        // 3) Materialize to memory so we can safely use ToString, ToLower, etc.
+        var list = query
+            .OrderByDescending(s => s.StartTime)
+            .ToList();   // from here on, LINQ-to-Objects, not SQL
+
+        // 4) Text search filter (in memory)
         if (!string.IsNullOrEmpty(searchTerm))
         {
             searchTerm = searchTerm.ToLower();
 
-            shifts = shifts.Where(s =>
+            list = list.Where(s =>
                 s.Id.ToString().Contains(searchTerm) ||
                 (s.Location != null && s.Location.ToLower().Contains(searchTerm)) ||
                 (s.ShiftType != null && s.ShiftType.ToLower().Contains(searchTerm)) ||
@@ -389,7 +399,7 @@ public class ShiftController : Controller
             ).ToList();
         }
 
-        return View(shifts);
+        return View(list);
     }
 
     // POST: /Shift/LogShift
