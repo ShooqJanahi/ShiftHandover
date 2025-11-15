@@ -12,8 +12,12 @@
     <div class="alert alert-success">@TempData["SuccessMessage"]</div>
 }
 
+
 <!-- form for creating a new user -->
 <form asp-action="AddUser" method="post">
+
+    
+
 
     <!-- First Name field -->
     <div class="form-group">
@@ -26,35 +30,36 @@
     <div class="form-group">
         <label asp-for="LastName"></label>
         <input asp-for="LastName" class="form-control" />
-        <span asp-validation-for="LastName" class="text-danger"></span>
+        <span asp-validation-for="LastName" class="text-danger"></span> <!-- Validation error message -->
     </div>
 
     <!-- Username field -->
     <div class="form-group">
         <label asp-for="Username"></label>
         <input asp-for="Username" class="form-control" />
-        <span asp-validation-for="Username" class="text-danger"></span>
+        <span asp-validation-for="Username" class="text-danger"></span> <!-- Validation error message -->
     </div>
 
-    <!-- Password field (manual setup because PasswordHash is not directly generated) -->
+    <!-- Password field -->
     <div class="form-group">
         <label>Password</label>
-        <input name="PasswordHash" type="password" class="form-control" required />
-        <span asp-validation-for="PasswordHash" class="text-danger"></span>
+        <input asp-for="PasswordHash" type="password" class="form-control" />
+        <span asp-validation-for="PasswordHash" class="text-danger"></span> <!-- Validation error message -->
+
     </div>
 
     <!-- Email field -->
     <div class="form-group">
         <label asp-for="Email"></label>
         <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
+        <span asp-validation-for="Email" class="text-danger"></span> <!-- Validation error message -->
     </div>
 
     <!-- Phone number field -->
     <div class="form-group">
         <label asp-for="PhoneNumber"></label>
         <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span> <!-- Validation error message -->
     </div>
 
     <!-- Department Dropdown Selection -->
@@ -70,7 +75,7 @@
                 }
             }
         </select>
-        <span asp-validation-for="DepartmentId" class="text-danger"></span>
+        <span asp-validation-for="DepartmentId" class="text-danger"></span> <!-- Validation error message -->
     </div>
 
 
@@ -84,7 +89,7 @@
             <option>Employee</option>
             <option>User</option>
         </select>
-        <span asp-validation-for="RoleTitle" class="text-danger"></span>
+        <span asp-validation-for="RoleTitle" class="text-danger"></span> <!-- Validation error message -->
     </div>
 
     <!-- Submit button -->

@@ -21,13 +21,58 @@
 
 
     <!-- Search Bar for filtering shifts -->
-    <form asp-action="@(role == "Admin" ? "AllShifts" : "ListAvailableShifts")" method="get" class="mb-4 w-100" id="searchForm">
-        <div class="d-flex justify-content-center" style="max-width: 900px; margin: 0 auto;">
-            <input type="text" id="searchInput" name="searchTerm" class="form-control mr-2" placeholder="Search shifts..." value="@Context.Request.Query["searchTerm"]" />
-            <button type="submit" class="btn btn-search mr-2">Search</button>
-            <a href="@(role == "Admin" ? "/Shift/AllShifts" : "/Shift/ListAvailableShifts")" class="btn btn-secondary">Clear</a>
+  <form asp-action="@(role == "Admin" ? "AllShifts" : "ListAvailableShifts")"
+      method="get"
+      class="mb-4 w-100"
+      id="searchForm">
+
+    <div class="row justify-content-center" style="max-width: 900px; margin: 0 auto;">
+
+        <!-- Search box -->
+        <div class="col-md-5 mb-2">
+            <input type="text"
+                   id="searchInput"
+                   name="searchTerm"
+                   class="form-control"
+                   placeholder="Search shifts..."
+                   value="@Context.Request.Query["searchTerm"]" />
         </div>
-    </form>
+
+        @* Status filter – only for Admin *@
+       @if (role == "Admin")
+{
+    var currentStatus = Context.Request.Query["statusFilter"].ToString();
+
+    <div class="col-md-3 mb-2">
+        <select name="statusFilter" class="form-control">
+         <option value="">All statuses</option>
+        <option value="Claimed" selected="@(currentStatus == "Claimed" ? "selected" : null)">
+         Claimed
+         </option>
+         <option value="Unclaimed" selected="@(currentStatus == "Unclaimed" ? "selected" : null)">
+          Unclaimed
+          </option>
+          <option value="Closed" selected="@(currentStatus == "Closed" ? "selected" : null)">
+           Closed
+          </option>
+
+
+        </select>
+    </div>
+}
+
+
+        <!-- Buttons -->
+        <div class="col-md-4 mb-2 d-flex">
+            <button type="submit" class="btn btn-search me-2">Search / Filter</button>
+            <a href="@(role == "Admin" ? "/Shift/AllShifts" : "/Shift/ListAvailableShifts")"
+               class="btn btn-secondary">
+                Clear
+            </a>
+        </div>
+    </div>
+</form>
+
 
 
     <hr />

@@ -11,11 +11,11 @@ namespace ShiftHandover.Models
         public int Id { get; set; }
 
         // ID of the supervisor assigned to the shift (stored as string for flexibility)
-        public string SupervisorId { get; set; }
+        public string? SupervisorId { get; set; }
 
         // Name of the supervisor assigned (used for quick display)
         [Display(Name = "Supervisor Name")]
-        public string SupervisorName { get; set; }
+        public string? SupervisorName { get; set; }
 
         // Shift start time
         [Display(Name = "Shift Start Time")]
@@ -40,7 +40,7 @@ namespace ShiftHandover.Models
         // Notes about the shift (optional field)
         [Display(Name = "Notes (Optional)")]
         [StringLength(1000)]
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
 
         // Total manpower reported during the shift (optional)
         [Display(Name = "Total Manpower")]
@@ -48,16 +48,21 @@ namespace ShiftHandover.Models
 
         // Type of shift (Morning, Afternoon, Evening, Night, etc.)
         [Display(Name = "Shift Type")]
-        public string ShiftType { get; set; } 
+        public string? ShiftType { get; set; }
 
-        // Foreign key to link the shift to a department
+        [Display(Name = "Department")]
+        [Required(ErrorMessage = "The Department field is required.")]
         public int? DepartmentId { get; set; }
 
         // Navigation property - A shift can have multiple associated logs (accidents, incidents, manpower entries)
-        public virtual ICollection<ShiftLog> Logs { get; set; }
+        public virtual ICollection<ShiftLog> Logs { get; set; } = new List<ShiftLog>();
+
 
         // Navigation property - Link back to the related Department
-        public Department Department { get; set; }
+        public Department? Department { get; set; }
+
+        public string? ClosedByUsername { get; set; }
+
 
     }
 }

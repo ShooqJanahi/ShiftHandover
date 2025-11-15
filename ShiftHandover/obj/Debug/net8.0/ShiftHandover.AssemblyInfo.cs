@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ShiftHandover")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f080220cdd7fb0c29300db1c8cc9f90b7dbd607a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+635fbee6c0e9936907e11710a71766c547ad9f42")]
 [assembly: System.Reflection.AssemblyProductAttribute("ShiftHandover")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ShiftHandover")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

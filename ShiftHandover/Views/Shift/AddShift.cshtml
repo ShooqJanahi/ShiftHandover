@@ -12,8 +12,17 @@
     <div class="alert alert-success">@TempData["SuccessMessage"]</div>
 }
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
 <!-- Form to create a new shift -->
 <form asp-action="AddShift" method="post" onsubmit="return confirmSubmitShift();">
+
+    @Html.AntiForgeryToken()   
+
+    <div asp-validation-summary="All" class="text-danger"></div>
 
     <!-- Location Input Field -->
     <div class="form-group">
@@ -36,6 +45,24 @@
         <span asp-validation-for="EndTime" class="text-danger"></span> <!-- Display validation error -->
     </div>
 
+    <!-- Department dropdown -->
+    <div class="form-group">
+        <label asp-for="DepartmentId"></label>
+        <select asp-for="DepartmentId" class="form-control">
+            <option value="">Select Department</option>
+            @if (ViewBag.Departments != null)
+            {
+                foreach (var department in (List<ShiftHandover.Models.Department>)ViewBag.Departments)
+                {
+                    <option value="@department.DepartmentId">
+                        @department.DepartmentId - @department.DepartmentName
+                    </option>
+                }
+            }
+        </select>
+        <span asp-validation-for="DepartmentId" class="text-danger"></span>
+    </div>
+
     <!-- Notes Textarea Field -->
     <div class="form-group">
         <label asp-for="Notes"></label>
@@ -49,24 +76,20 @@
 
 @section Scripts {
     <script>
-         // Function to confirm before submitting the form
         function confirmSubmitShift() {
             return confirm("Are you sure you want to create this shift?");
         }
 
-        // When page loads, if a success alert exists, reset the form
+        
         window.addEventListener('load', function () {
             const successAlert = document.querySelector('.alert-success');
             if (successAlert) {
-                // Clear the form fields if success message exists
                 document.querySelector('form').reset();
             }
         });
     </script>
 
-    <!-- Partial view to include client-side validation scripts -->
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-

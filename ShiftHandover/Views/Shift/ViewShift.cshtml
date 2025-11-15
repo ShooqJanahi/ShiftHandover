@@ -3,7 +3,10 @@
 
 @{
     ViewBag.Title = "Shift Details";
+    var role = Context.Session.GetString("Role");
 }
+
+
 
 <div class="container-fluid">
     <div class="row content">
@@ -57,7 +60,7 @@
                 <h2>Shift Details</h2>
                 <hr />
 
-                <!-- Shift information displayed using Definition List -->
+                <!-- Shift information displayed -->
                 <dl class="row">
                     <dt class="col-sm-3">Shift ID:</dt>
                     <dd class="col-sm-9">@Model.Id</dd>
@@ -84,18 +87,37 @@
                     <dd class="col-sm-9">@Model.Notes</dd>
 
                     <dt class="col-sm-3">Shift Status:</dt>
-                    <dd class="col-sm-9">@((Model.IsClosed) ? "Closed" : (Model.IsClaimed ? "Claimed" : "Unclaimed"))</dd>
+                    <dd class="col-sm-9">
+                        @((Model.IsClosed) ? "Closed" : (Model.IsClaimed ? "Claimed" : "Unclaimed"))
+                    </dd>
+
+                    @* Show Closed By only when shift is closed *@
+                    @if (Model.IsClosed)
+                    {
+                        <dt class="col-sm-3">Closed By:</dt>
+                        <dd class="col-sm-9">
+                            @(string.IsNullOrEmpty(Model.ClosedByUsername) ? "-" : Model.ClosedByUsername)
+                        </dd>
+                    }
                 </dl>
 
-                <!-- Show Close Shift button if shift is claimed and still open -->
                 @if (Model.IsClaimed && !Model.IsClosed)
                 {
                     <h4>Close Shift</h4>
-                    <p>Click below to close your shift. No more edits allowed after closing.</p>
+                    <p>Click below to close this shift. No more edits allowed after closing.</p>
+
                     <form id="closeShiftForm" asp-action="CloseShift" method="post" asp-route-id="@Model.Id">
-                        <button type="button" class="btn btn-warning" onclick="confirmCloseShift()">Close My Shift</button>
+                        <button type="button"
+                                class="btn btn-warning"
+                                onclick="confirmCloseShift()">
+                            @(role == "Admin" ? "Close Shift" : "Close My Shift")
+                        </button>
                     </form>
                 }
+
+                </dl>
+
+                
             </div>
 
             <!-- Log Shift Activity Form, available only for active claimed shifts -->

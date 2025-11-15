@@ -65,53 +65,56 @@ namespace ShiftHandover.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddUser(User model)
         {
-            ViewBag.Departments = _context.Departments.ToList(); // Always load departments in case form reloads due to error
+            // Always reload departments for the dropdown
+            ViewBag.Departments = _context.Departments.ToList();
 
+            // Ignore validation for navigation property Department
+            ModelState.Remove("Department");
+
+            // 1) Data-annotation validation (required fields, phone regex, etc.)
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            // Validate uniqueness of username, email, and phone number
+            // 2) Custom uniqueness checks
             if (_context.Users.Any(u => u.Username == model.Username))
             {
                 ModelState.AddModelError("Username", "Username already exists.");
                 return View(model);
             }
+
             if (_context.Users.Any(u => u.Email == model.Email))
             {
                 ModelState.AddModelError("Email", "Email already exists.");
                 return View(model);
             }
+
             if (_context.Users.Any(u => u.PhoneNumber == model.PhoneNumber))
             {
                 ModelState.AddModelError("PhoneNumber", "Phone number already exists.");
                 return View(model);
             }
 
-            // Temporarily store plain password for emailing
-            string plainPassword = model.PasswordHash;
-
-            // Validate password format (uppercase, lowercase, number, special character, min 8 chars)
-           
+            // 3) Custom password pattern check
             var passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
-
             if (!System.Text.RegularExpressions.Regex.IsMatch(model.PasswordHash, passwordPattern))
             {
                 ModelState.AddModelError("PasswordHash", "Password must be at least 8 characters, include uppercase, lowercase, number, and special character.");
                 return View(model);
             }
 
-            // Hash password before saving into the database
+            // Temporarily keep plain password for email
+            string plainPassword = model.PasswordHash;
+
+            // 4) Hash & save
             model.PasswordHash = PasswordHelper.Hash(model.PasswordHash);
+            model.IsActive = true;
 
-            model.IsActive = true; // Set new users as active by default
-
-            // Save the user
             _context.Users.Add(model);
             _context.SaveChanges();
 
-            // Send credentials to the user via email
+            // 5) Send email & redirect
             SendEmailHelper.Send(model.Email, model.Username, plainPassword);
 
             TempData["SuccessMessage"] = "User created successfully and credentials sent!";
@@ -133,7 +136,7 @@ namespace ShiftHandover.Controllers
             .ToList();
 
 
-            // Apply search functionality
+            // search functionality
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 searchTerm = searchTerm.ToLower();
@@ -149,7 +152,7 @@ namespace ShiftHandover.Controllers
                 ).ToList();
             }
 
-            // Apply status (Active/Inactive) filter
+            // status (Active/Inactive) filter
             if (!string.IsNullOrEmpty(statusFilter))
             {
                 if (statusFilter == "Active")
@@ -187,11 +190,14 @@ namespace ShiftHandover.Controllers
 
 
         // POST: Admin/GenerateUserReport
-        //Generate a detailed PDF report for a user
+        // Generate a detailed PDF report for a user
         [HttpPost]
         public IActionResult GenerateUserReport(int id)
         {
-            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+            var user = _context.Users
+                .Include(u => u.Department)
+                .FirstOrDefault(u => u.UserId == id);
+
             if (user == null)
                 return NotFound();
 
@@ -201,143 +207,306 @@ namespace ShiftHandover.Controllers
                 .ToList();
 
             var shiftIds = shifts.Select(s => s.Id).ToList();
+
             var shiftLogs = _context.ShiftLogs
                 .Where(log => shiftIds.Contains(log.ShiftId))
                 .OrderByDescending(log => log.LogTime)
                 .ToList();
 
-            // Building the PDF document using QuestPDF
+            // ---- summary numbers ----
+            var totalShifts = shifts.Count;
+            var activeShifts = shifts.Count(s => s.IsClaimed && !s.IsClosed);
+            var closedShifts = shifts.Count(s => s.IsClosed);
+            var upcomingShifts = shifts.Count(s => !s.IsClosed && s.StartTime >= DateTime.Now);
+            var totalLogs = shiftLogs.Count;
+
             var document = Document.Create(container =>
             {
                 container.Page(page =>
                 {
                     page.Margin(30);
+                    page.Size(PageSizes.A4);
+                    page.PageColor(Colors.Grey.Lighten4);
 
-                    page.Header().Text("ShiftHandover - User Report")
-                                 .FontSize(24)
-                                 .SemiBold()
-                                 .FontColor("#007ACC")
-                                 .AlignCenter();
+                    // ---------- HEADER ----------
+                    page.Header().Row(row =>
+                    {
+                        row.RelativeItem().Column(col =>
+                        {
+                            col.Item().Text("ShiftHandover")
+                                .FontSize(10)
+                                .FontColor(Colors.Grey.Darken2);
 
-                    page.Content().Column(col =>
+                            col.Item().Text("User Activity Report")
+                                .FontSize(22)
+                                .SemiBold()
+                                .FontColor("#007ACC");
+                        });
+
+                        row.ConstantItem(180).Column(col =>
+                        {
+                            col.Item().AlignRight().Text($"User: {user.Username}")
+                                .FontSize(10)
+                                .SemiBold();
+
+                            col.Item().AlignRight().Text($"Generated: {DateTime.Now:f}")
+                                .FontSize(9)
+                                .FontColor(Colors.Grey.Darken2);
+                        });
+                    });
+
+                    // ---------- CONTENT ----------
+                    page.Content().PaddingVertical(10).Column(col =>
                     {
                         col.Spacing(15);
 
-                        // User Information
-                        col.Item().Border(1).BorderColor("#007ACC").Padding(10).Column(innerCol =>
+                        // ---- User details card ----
+                        col.Item().Background(Colors.White)
+                            .Border(1).BorderColor("#007ACC")
+                            .Padding(12)
+                            .Column(section =>
+                            {
+                                section.Spacing(4);
+
+                                section.Item().Text("User Details")
+                                    .FontSize(14)
+                                    .SemiBold()
+                                    .FontColor("#007ACC");
+
+                                section.Item()
+                                    .BorderBottom(1)
+                                    .BorderColor("#007ACC")
+                                    .PaddingBottom(5);
+
+                                section.Item().Row(r =>
+                                {
+                                    r.RelativeItem().Column(c =>
+                                    {
+                                        LabelValue(c, "User ID", user.UserId.ToString());
+                                        LabelValue(c, "Name", $"{user.FirstName} {user.LastName}");
+                                        LabelValue(c, "Username", user.Username);
+                                        LabelValue(c, "Email", user.Email);
+                                    });
+
+                                    r.RelativeItem().Column(c =>
+                                    {
+                                        LabelValue(c, "Phone", user.PhoneNumber);
+                                        LabelValue(c, "Department", user.Department?.DepartmentName ?? "N/A");
+                                        LabelValue(c, "Role", user.RoleTitle);
+                                        LabelValue(c, "Status", user.IsActive ? "Active" : "Inactive");
+                                    });
+                                });
+                            });
+
+                        // ---- Summary cards ----
+                        col.Item().Row(row =>
                         {
-                            innerCol.Item().Text($"User ID: {user.UserId}");
-                            innerCol.Item().Text($"Name: {user.FirstName} {user.LastName}");
-                            innerCol.Item().Text($"Username: {user.Username}");
-                            innerCol.Item().Text($"Email: {user.Email}");
-                            innerCol.Item().Text($"Phone: {user.PhoneNumber}");
+                            row.Spacing(8);
 
-                            innerCol.Item().Text(
-                             $"Department: {user.Department?.DepartmentName ?? "N/A"}"
-                             );
-
-                            innerCol.Item().Text($"Role: {user.RoleTitle}");
-                            innerCol.Item().Text($"Status: {(user.IsActive ? "Active" : "Inactive")}");
+                            SummaryCard(row, "Total Shifts", totalShifts.ToString());
+                            SummaryCard(row, "Active Shifts", activeShifts.ToString());
+                            SummaryCard(row, "Closed Shifts", closedShifts.ToString());
+                            SummaryCard(row, "Upcoming Shifts", upcomingShifts.ToString());
+                            SummaryCard(row, "Total Logs", totalLogs.ToString());
                         });
 
-                        // Shifts History Section
-                        col.Item().PaddingTop(20).Text("Shifts History").FontSize(18).Bold().FontColor("#007ACC");
-
-                        if (shifts.Any())
+                        // ---- Shifts history table ----
+                        col.Item().PaddingTop(10).Column(section =>
                         {
-                            col.Item().Table(table =>
+                            section.Item().Text("Shifts History")
+                                .FontSize(14)
+                                .SemiBold()
+                                .FontColor("#007ACC");
+
+                            section.Item()
+                                .BorderBottom(1)
+                                .BorderColor("#007ACC")
+                                .PaddingBottom(5);
+
+                            if (shifts.Any())
                             {
-                                table.ColumnsDefinition(columns =>
-                                {
-                                    columns.RelativeColumn();
-                                    columns.RelativeColumn();
-                                    columns.RelativeColumn();
-                                    columns.RelativeColumn();
-                                    columns.RelativeColumn();
-                                    columns.RelativeColumn();
-                                });
+                                section.Item().Background(Colors.White)
+                                    .Border(1)
+                                    .BorderColor(Colors.Grey.Lighten1)
+                                    .Padding(5)
+                                    .Table(table =>
+                                    {
+                                        table.ColumnsDefinition(columns =>
+                                        {
+                                            columns.RelativeColumn(1.2f);   // Shift ID
+                                            columns.RelativeColumn(1.8f);   // Type
+                                            columns.RelativeColumn(2f);     // Location
+                                            columns.RelativeColumn(2f);     // Start
+                                            columns.RelativeColumn(2f);     // End
+                                            columns.RelativeColumn(1.5f);   // Status
+                                        });
 
-                                table.Header(header =>
-                                {
-                                    header.Cell().Element(CellStyle).Text("Shift ID").SemiBold();
-                                    header.Cell().Element(CellStyle).Text("Shift Type").SemiBold();
-                                    header.Cell().Element(CellStyle).Text("Location").SemiBold();
-                                    header.Cell().Element(CellStyle).Text("Start Time").SemiBold();
-                                    header.Cell().Element(CellStyle).Text("End Time").SemiBold();
-                                    header.Cell().Element(CellStyle).Text("Status").SemiBold();
-                                });
+                                        // Header
+                                        table.Header(header =>
+                                        {
+                                            header.Cell().Element(HeaderCell).Text("Shift ID").SemiBold();
+                                            header.Cell().Element(HeaderCell).Text("Shift Type").SemiBold();
+                                            header.Cell().Element(HeaderCell).Text("Location").SemiBold();
+                                            header.Cell().Element(HeaderCell).Text("Start Time").SemiBold();
+                                            header.Cell().Element(HeaderCell).Text("End Time").SemiBold();
+                                            header.Cell().Element(HeaderCell).Text("Status").SemiBold();
+                                        });
 
-                                foreach (var shift in shifts)
-                                {
-                                    table.Cell().Element(CellStyle).Text($"{shift.Id}");
-                                    table.Cell().Element(CellStyle).Text(shift.ShiftType ?? "-");
-                                    table.Cell().Element(CellStyle).Text(shift.Location ?? "-");
-                                    table.Cell().Element(CellStyle).Text(shift.StartTime.ToString("g"));
-                                    table.Cell().Element(CellStyle).Text(shift.EndTime.HasValue ? shift.EndTime.Value.ToString("g") : "N/A");
-                                    table.Cell().Element(CellStyle).Text(
-                                        shift.IsClosed ? "Closed" : shift.IsClaimed ? "Claimed" : "Unclaimed"
-                                    );
-                                }
-                            });
-                        }
-                        else
-                        {
-                            col.Item().Text("No shifts assigned to this user.").Italic();
-                        }
+                                        var indexedShifts = shifts.Select((s, idx) => new { s, idx });
 
-                        // Shift Logs Section
-                        col.Item().PaddingTop(20).Text("Shift Logs").FontSize(18).Bold().FontColor("#007ACC");
+                                        foreach (var item in indexedShifts)
+                                        {
+                                            bool zebra = item.idx % 2 == 1;
 
-                        if (shiftLogs.Any())
-                        {
-                            col.Item().Table(table =>
+                                            table.Cell().Element(c => DataCell(c, zebra))
+                                                .Text(item.s.Id.ToString());
+                                            table.Cell().Element(c => DataCell(c, zebra))
+                                                .Text(item.s.ShiftType ?? "-");
+                                            table.Cell().Element(c => DataCell(c, zebra))
+                                                .Text(item.s.Location ?? "-");
+                                            table.Cell().Element(c => DataCell(c, zebra))
+                                                .Text(item.s.StartTime.ToString("g"));
+                                            table.Cell().Element(c => DataCell(c, zebra))
+                                                .Text(item.s.EndTime.HasValue
+                                                    ? item.s.EndTime.Value.ToString("g")
+                                                    : "N/A");
+                                            table.Cell().Element(c => DataCell(c, zebra))
+                                                .Text(item.s.IsClosed
+                                                    ? "Closed"
+                                                    : item.s.IsClaimed ? "Claimed" : "Unclaimed");
+                                        }
+                                    });
+                            }
+                            else
                             {
-                                table.ColumnsDefinition(columns =>
-                                {
-                                    columns.RelativeColumn(2);
-                                    columns.RelativeColumn(2);
-                                    columns.RelativeColumn(2);
-                                    columns.RelativeColumn(2);
-                                    columns.RelativeColumn(6);
-                                });
+                                section.Item().Text("No shifts assigned to this user.")
+                                    .Italic()
+                                    .FontColor(Colors.Grey.Darken1);
+                            }
+                        });
 
-                                table.Header(header =>
-                                {
-                                    header.Cell().Element(CellStyle).Text("Time").SemiBold();
-                                    header.Cell().Element(CellStyle).Text("Type").SemiBold();
-                                    header.Cell().Element(CellStyle).Text("Severity").SemiBold();
-                                    header.Cell().Element(CellStyle).Text("Shift ID").SemiBold();
-                                    header.Cell().Element(CellStyle).Text("Description").SemiBold();
-                                });
-
-                                foreach (var log in shiftLogs)
-                                {
-                                    table.Cell().Element(CellStyle).Text($"{log.LogTime:g}");
-                                    table.Cell().Element(CellStyle).Text(log.Type ?? "-");
-                                    table.Cell().Element(CellStyle).Text(log.Severity ?? "-");
-                                    table.Cell().Element(CellStyle).Text(log.ShiftId.ToString());
-                                    table.Cell().Element(CellStyle).Text(log.Description ?? "-");
-                                }
-                            });
-                        }
-                        else
+                        // ---- Shift logs table ----
+                        col.Item().PaddingTop(10).Column(section =>
                         {
-                            col.Item().Text("No logs recorded.").Italic();
-                        }
+                            section.Item().Text("Shift Logs")
+                                .FontSize(14)
+                                .SemiBold()
+                                .FontColor("#007ACC");
 
+                            section.Item()
+                                .BorderBottom(1)
+                                .BorderColor("#007ACC")
+                                .PaddingBottom(5);
+
+                            if (shiftLogs.Any())
+                            {
+                                section.Item().Background(Colors.White)
+                                    .Border(1)
+                                    .BorderColor(Colors.Grey.Lighten1)
+                                    .Padding(5)
+                                    .Table(table =>
+                                    {
+                                        table.ColumnsDefinition(columns =>
+                                        {
+                                            columns.RelativeColumn(2);   // Time
+                                            columns.RelativeColumn(1.5f);// Type
+                                            columns.RelativeColumn(1.5f);// Severity
+                                            columns.RelativeColumn(1.5f);// Shift ID
+                                            columns.RelativeColumn(5);   // Description
+                                        });
+
+                                        // Header
+                                        table.Header(header =>
+                                        {
+                                            header.Cell().Element(HeaderCell).Text("Time").SemiBold();
+                                            header.Cell().Element(HeaderCell).Text("Type").SemiBold();
+                                            header.Cell().Element(HeaderCell).Text("Severity").SemiBold();
+                                            header.Cell().Element(HeaderCell).Text("Shift ID").SemiBold();
+                                            header.Cell().Element(HeaderCell).Text("Description").SemiBold();
+                                        });
+
+                                        var indexedLogs = shiftLogs.Select((log, idx) => new { log, idx });
+
+                                        foreach (var item in indexedLogs)
+                                        {
+                                            bool zebra = item.idx % 2 == 1;
+
+                                            table.Cell().Element(c => DataCell(c, zebra))
+                                                .Text($"{item.log.LogTime:g}");
+                                            table.Cell().Element(c => DataCell(c, zebra))
+                                                .Text(item.log.Type ?? "-");
+                                            table.Cell().Element(c => DataCell(c, zebra))
+                                                .Text(item.log.Severity ?? "-");
+                                            table.Cell().Element(c => DataCell(c, zebra))
+                                                .Text(item.log.ShiftId.ToString());
+                                            table.Cell().Element(c => DataCell(c, zebra))
+                                                .Text(string.IsNullOrWhiteSpace(item.log.Description)
+                                                    ? "-"
+                                                    : item.log.Description);
+                                        }
+                                    });
+                            }
+                            else
+                            {
+                                section.Item().Text("No logs recorded for this user.")
+                                    .Italic()
+                                    .FontColor(Colors.Grey.Darken1);
+                            }
+                        });
                     });
 
-                    page.Footer().AlignCenter().Text($"Generated on {DateTime.Now:f}").FontSize(10).FontColor(Colors.Grey.Darken2);
+                    // ---------- FOOTER ----------
+                    page.Footer().AlignCenter()
+                        .Text("ShiftHandover – Confidential · For internal use only")
+                        .FontSize(9)
+                        .FontColor(Colors.Grey.Darken2);
                 });
             });
 
-            // Generate PDF and return as file download
             var pdfBytes = document.GeneratePdf();
-
             return File(pdfBytes, "application/pdf", $"UserReport_{user.Username}.pdf");
 
-            // Helper for table cell styling
-            IContainer CellStyle(IContainer container) => container.PaddingVertical(5).PaddingHorizontal(3);
+            // ---------- local helper functions ----------
+
+            void LabelValue(ColumnDescriptor col, string label, string? value)
+            {
+                col.Item().Row(row =>
+                {
+                    row.ConstantItem(90).Text(label + ":")
+                        .SemiBold()
+                        .FontSize(10);
+
+                    row.RelativeItem().Text(string.IsNullOrWhiteSpace(value) ? "-" : value)
+                        .FontSize(10);
+                });
+            }
+
+            void SummaryCard(RowDescriptor row, string title, string value)
+            {
+                row.RelativeItem().Background(Colors.White)
+                    .Border(1).BorderColor(Colors.Grey.Lighten2)
+                    .Padding(8)
+                    .Column(col =>
+                    {
+                        col.Item().Text(title)
+                            .FontSize(9)
+                            .FontColor(Colors.Grey.Darken2);
+                        col.Item().Text(value)
+                            .FontSize(12)
+                            .SemiBold()
+                            .FontColor("#007ACC");
+                    });
+            }
+
+            IContainer HeaderCell(IContainer container) =>
+                container.Background("#007ACC")
+                    .PaddingVertical(4).PaddingHorizontal(3)
+                    .DefaultTextStyle(t => t.FontColor(Colors.White).FontSize(10));
+
+            IContainer DataCell(IContainer container, bool zebra) =>
+                container.PaddingVertical(4).PaddingHorizontal(3)
+                    .Background(zebra ? Colors.Grey.Lighten4 : Colors.White)
+                    .DefaultTextStyle(t => t.FontSize(9));
         }
 
         // POST: Admin/DeactivateUser

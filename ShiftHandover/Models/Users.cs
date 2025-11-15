@@ -41,7 +41,8 @@ namespace ShiftHandover.Models
         public string PhoneNumber { get; set; }
 
 
-        // Optional: foreign key linking to Department entity
+        [Display(Name = "Department")]
+        [Required(ErrorMessage = "The Department field is required.")]
         public int? DepartmentId { get; set; }
 
         // User's role title (e.g., Admin, Supervisor)
@@ -53,6 +54,6 @@ namespace ShiftHandover.Models
 
         // Navigation property for the related Department
         [ForeignKey("DepartmentId")]
-        public Department Department { get; set; }
+        public Department? Department { get; set; }
     }
 }

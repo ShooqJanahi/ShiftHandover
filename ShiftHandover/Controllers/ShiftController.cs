@@ -34,7 +34,7 @@ public class ShiftController : Controller
 
         // Only this supervisor's claimed shifts
         var shifts = _context.Shifts
-            .Where(s => s.SupervisorName == username && s.IsClaimed)   // ✅ claimed by this user
+            .Where(s => s.SupervisorName == username && s.IsClaimed)   // claimed by this user
             .Select(s => new
             {
                 id = s.Id,
@@ -77,24 +77,32 @@ public class ShiftController : Controller
     public IActionResult CloseShift(int id)
     {
         var username = HttpContext.Session.GetString("Username");
+        var role = HttpContext.Session.GetString("Role");
+
         if (string.IsNullOrEmpty(username))
             return RedirectToAction("Login", "Account"); // Not logged in
 
-
-
         var shift = _context.Shifts.FirstOrDefault(s => s.Id == id);
-
         if (shift == null)
-        {
             return NotFound(); // Shift not found
-        }
 
-        if (shift.SupervisorName != username || !shift.IsClaimed || shift.IsClosed)
+        bool isAdmin = role == "Admin";
+
+        // Only Admin OR owning supervisor can close, and only if not already closed
+        if (shift.IsClosed)
+            return Unauthorized();   // already closed
+
+        if (!isAdmin)
         {
-            return Unauthorized(); // Unauthorized action (Protect ownership)
+            // normal supervisor: must own the shift and it must be claimed
+            if (shift.SupervisorName != username || !shift.IsClaimed)
+                return Unauthorized();
         }
 
-        shift.IsClosed = true; // Close the shift
+        // Close and record who closed
+        shift.IsClosed = true;
+        shift.ClosedByUsername = username;
+
         _context.SaveChanges();
 
         return RedirectToAction("ViewShift", new { id = id });
@@ -140,7 +148,7 @@ public class ShiftController : Controller
         }
 
 
-        // Apply search filter
+        // search filter
         if (!string.IsNullOrEmpty(searchTerm))
         {
             searchTerm = searchTerm.ToLower();
@@ -160,7 +168,7 @@ public class ShiftController : Controller
 
 
 
-        //  Apply additional filters
+        // additional filters
         if (!string.IsNullOrEmpty(shiftTypeFilter))
         {
             shifts = shifts.Where(s => s.ShiftType != null && s.ShiftType.Equals(shiftTypeFilter, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -222,7 +230,7 @@ public class ShiftController : Controller
         if (overlappingShift)
         {
             Console.WriteLine($"Overlap detected for user {username} trying to claim shift {id}");
-            return Conflict("You already have a shift that overlaps with this one."); // ⭐ Return 409 Conflict
+            return Conflict("You already have a shift that overlaps with this one."); // Return 409 Conflict
         }
 
 
@@ -247,105 +255,259 @@ public class ShiftController : Controller
             return NotFound();
 
         var shiftLogs = _context.ShiftLogs
-             .Where(log => log.ShiftId == id)
-             .OrderByDescending(log => log.LogTime) // 👈 Add this
-             .ToList();
+            .Where(log => log.ShiftId == id)
+            .OrderByDescending(log => log.LogTime)
+            .ToList();
 
+        // Small summary numbers
+        var totalLogs = shiftLogs.Count;
+        var accidentsCount = shiftLogs.Count(l => l.Type == "Accident");
+        var incidentsCount = shiftLogs.Count(l => l.Type == "Incident");
+        var manpowerTotal = shiftLogs
+            .Where(l => l.ManpowerCount.HasValue)
+            .Sum(l => l.ManpowerCount.Value);
 
         var document = Document.Create(container =>
         {
             container.Page(page =>
             {
                 page.Margin(30);
-                page.Header().Text("ShiftHandover - Shift Report")
-                             .FontSize(24)
-                             .SemiBold()
-                             .FontColor("#A30020")
-                             .AlignCenter();
+                page.Size(PageSizes.A4);
+                page.PageColor(Colors.Grey.Lighten4);
 
-                page.Content().Column(col =>
+                // ------------ HEADER ------------
+                page.Header().Row(row =>
                 {
-                    col.Spacing(10);
-
-                    // Display shift details
-                    col.Item().Border(1).BorderColor("#A30020").Padding(10).Column(innerCol =>
+                    row.RelativeItem().Column(col =>
                     {
-                        innerCol.Item().Text($"Shift ID: {shift.Id}");
-                      
-                        innerCol.Item().Text($"Supervisor: {shift.SupervisorName}");
-                        innerCol.Item().Text($"Location: {shift.Location}");
-                        innerCol.Item().Text($"Shift Type: {shift.ShiftType}");
-                        innerCol.Item().Text($"Start Time: {shift.StartTime:f}");
-                        innerCol.Item().Text($"End Time: {(shift.EndTime.HasValue ? shift.EndTime.Value.ToString("f") : "N/A")}");
-                        innerCol.Item().Text($"Total Manpower: {shift.TotalManpower}");
-                        innerCol.Item().Text($"Notes: {shift.Notes}");
-                        innerCol.Item().Text($"Shift Status: {(shift.IsClosed ? "Closed" : shift.IsClaimed ? "Claimed" : "Available")}");
+                        col.Item().Text("ShiftHandover")
+                            .FontSize(10)
+                            .FontColor(Colors.Grey.Darken2);
+
+                        col.Item().Text("Shift Report")
+                            .FontSize(22)
+                            .SemiBold()
+                            .FontColor("#A30020");
                     });
 
-                    // Display shift logs in a table
-                    col.Item().PaddingTop(20).Text("Shift Logs:").FontSize(18).Bold().FontColor("#A30020");
-
-                    if (shiftLogs.Any())
+                    row.ConstantItem(160).Column(col =>
                     {
-                        // Make a nice table of logs
-                        col.Item().Table(table =>
-                        {
-                            table.ColumnsDefinition(columns =>
-                            {
-                                columns.RelativeColumn(2); // Time
-                                columns.RelativeColumn(2); // Type
-                                columns.RelativeColumn(2); // Severity
-                                columns.RelativeColumn(3); // Involved Person
-                                columns.RelativeColumn(2); // Manpower Count
-                                columns.RelativeColumn(5); // Description
-                            });
+                        col.Item().AlignRight().Text($"Shift ID: {shift.Id}")
+                            .FontSize(10)
+                            .SemiBold();
 
-                            // Header Row
-                            table.Header(header =>
-                            {
-                                header.Cell().Element(CellStyle).Text("Time").SemiBold();
-                                header.Cell().Element(CellStyle).Text("Type").SemiBold();
-                                header.Cell().Element(CellStyle).Text("Severity").SemiBold();
-                                header.Cell().Element(CellStyle).Text("Involved Person").SemiBold();
-                                header.Cell().Element(CellStyle).Text("Manpower Count").SemiBold();
-                                header.Cell().Element(CellStyle).Text("Description").SemiBold();
-                            });
-
-                            // Data Rows
-                            foreach (var log in shiftLogs)
-                            {
-                                table.Cell().Element(CellStyle).Text($"{log.LogTime:g}");
-                                table.Cell().Element(CellStyle).Text(log.Type);
-                                table.Cell().Element(CellStyle).Text(log.Severity);
-                                table.Cell().Element(CellStyle).Text(string.IsNullOrEmpty(log.InvolvedPerson) ? "-" : log.InvolvedPerson);
-                                table.Cell().Element(CellStyle).Text(log.ManpowerCount.HasValue ? log.ManpowerCount.ToString() : "-");
-                                table.Cell().Element(CellStyle).Text(log.Description);
-                            }
-                        });
-                    }
-                    else
-                    {
-                        col.Item().Text("No logs recorded for this shift.").Italic().FontColor(Colors.Grey.Darken1);
-                    }
+                        col.Item().AlignRight().Text($"Generated: {DateTime.Now:f}")
+                            .FontSize(9)
+                            .FontColor(Colors.Grey.Darken2);
+                    });
                 });
 
-                page.Footer()
-                    .AlignCenter()
-                    .Text($"Generated on {DateTime.Now:f}")
-                    .FontSize(10)
+                // ------------ CONTENT ------------
+                page.Content().PaddingVertical(10).Column(col =>
+                {
+                    col.Spacing(15);
+
+                    // Shift details card
+                    col.Item().Background(Colors.White)
+                        .Border(1).BorderColor("#A30020")
+                        .Padding(12)
+                        .Column(section =>
+                        {
+                            section.Spacing(4);
+
+                            section.Item().Text("Shift Details")
+                                .FontSize(14)
+                                .SemiBold()
+                                .FontColor("#A30020");
+
+                            section.Item().LineHorizontal(0.5f).LineColor("#A30020");
+
+                            section.Item().Row(r =>
+                            {
+                                r.RelativeItem().Column(c =>
+                                {
+                                    LabelValue(c, "Start Time", shift.StartTime.ToString("f"));
+                                    LabelValue(c, "End Time", shift.EndTime.HasValue
+                                        ? shift.EndTime.Value.ToString("f")
+                                        : "N/A");
+                                    LabelValue(c, "Total Manpower", (shift.TotalManpower ?? 0).ToString());
+                                    LabelValue(c, "Status",
+                                        shift.IsClosed ? "Closed" :
+                                        shift.IsClaimed ? "Claimed" : "Available");
+
+                                    // Closed By
+                                    var closedBy = string.IsNullOrWhiteSpace(shift.ClosedByUsername)
+                                        ? "-"
+                                        : shift.ClosedByUsername;
+                                    LabelValue(c, "Closed By", closedBy);
+                                });
+
+
+                            });
+
+                            if (!string.IsNullOrWhiteSpace(shift.Notes))
+                            {
+                                section.Item().PaddingTop(6).Column(c =>
+                                {
+                                    c.Item().Text("Notes")
+                                        .SemiBold()
+                                        .FontSize(11);
+
+                                    c.Item().Text(shift.Notes)
+                                        .FontSize(10);
+                                });
+                            }
+                        });
+
+                    // Summary of logs 
+                    col.Item().Row(row =>
+                    {
+                        row.Spacing(8);
+
+                        SummaryCard(row, "Total Logs", totalLogs.ToString());
+                        SummaryCard(row, "Accidents", accidentsCount.ToString());
+                        SummaryCard(row, "Incidents", incidentsCount.ToString());
+                        SummaryCard(row, "Total Manpower Logged", manpowerTotal.ToString());
+                    });
+
+                    // Shift logs table
+                    col.Item().PaddingTop(10).Column(section =>
+                    {
+                        section.Item().Text("Shift Logs")
+                            .FontSize(14)
+                            .SemiBold()
+                            .FontColor("#A30020");
+
+                        section.Item()
+                        .BorderBottom(1)
+                        .BorderColor("#A30020")
+                        .PaddingBottom(5);
+
+
+                        if (shiftLogs.Any())
+                        {
+                            section.Item().Background(Colors.White)
+                                .Border(1)
+                                .BorderColor(Colors.Grey.Lighten1)
+                                .Padding(5)
+                                .Table(table =>
+                                {
+                                    table.ColumnsDefinition(columns =>
+                                    {
+                                        columns.RelativeColumn(2); // Time
+                                        columns.RelativeColumn(1.5f); // Type
+                                        columns.RelativeColumn(1.5f); // Severity
+                                        columns.RelativeColumn(2); // Involved Person
+                                        columns.RelativeColumn(1.5f); // Manpower
+                                        columns.RelativeColumn(4); // Description
+                                    });
+
+                                    // Header
+                                    table.Header(header =>
+                                    {
+                                        header.Cell().Element(HeaderCell)
+                                            .Text("Time").SemiBold();
+                                        header.Cell().Element(HeaderCell)
+                                            .Text("Type").SemiBold();
+                                        header.Cell().Element(HeaderCell)
+                                            .Text("Severity").SemiBold();
+                                        header.Cell().Element(HeaderCell)
+                                            .Text("Involved Person").SemiBold();
+                                        header.Cell().Element(HeaderCell)
+                                            .Text("Manpower").SemiBold();
+                                        header.Cell().Element(HeaderCell)
+                                            .Text("Description").SemiBold();
+                                    });
+
+                                    // Rows 
+                                    var indexedLogs = shiftLogs
+                                        .Select((log, index) => new { log, index });
+
+                                    foreach (var item in indexedLogs)
+                                    {
+                                        bool isOdd = item.index % 2 == 1;
+
+                                        table.Cell().Element(c => DataCell(c, isOdd))
+                                            .Text($"{item.log.LogTime:g}");
+                                        table.Cell().Element(c => DataCell(c, isOdd))
+                                            .Text(item.log.Type ?? "-");
+                                        table.Cell().Element(c => DataCell(c, isOdd))
+                                            .Text(item.log.Severity ?? "-");
+                                        table.Cell().Element(c => DataCell(c, isOdd))
+                                            .Text(string.IsNullOrEmpty(item.log.InvolvedPerson)
+                                                ? "-"
+                                                : item.log.InvolvedPerson);
+                                        table.Cell().Element(c => DataCell(c, isOdd))
+                                            .Text(item.log.ManpowerCount.HasValue
+                                                ? item.log.ManpowerCount.Value.ToString()
+                                                : "-");
+                                        table.Cell().Element(c => DataCell(c, isOdd))
+                                            .Text(string.IsNullOrWhiteSpace(item.log.Description)
+                                                ? "-"
+                                                : item.log.Description);
+                                    }
+                                });
+                        }
+                        else
+                        {
+                            section.Item().Text("No logs recorded for this shift.")
+                                .Italic()
+                                .FontColor(Colors.Grey.Darken1);
+                        }
+                    });
+                });
+
+                // ------------ FOOTER ------------
+                page.Footer().AlignCenter()
+                    .Text("ShiftHandover – Confidential · For internal use only")
+                    .FontSize(9)
                     .FontColor(Colors.Grey.Darken2);
             });
         });
 
-        byte[] pdfBytes = document.GeneratePdf();
-
+        var pdfBytes = document.GeneratePdf();
         return File(pdfBytes, "application/pdf", $"ShiftReport_{shift.Id}.pdf");
 
-        // Helper method to style table cells
-        IContainer CellStyle(IContainer container)
+        // --- local helpers for styling ---
+
+        void LabelValue(ColumnDescriptor col, string label, string value)
         {
-            return container.PaddingVertical(5).PaddingHorizontal(2);
+            col.Item().Row(row =>
+            {
+                row.ConstantItem(90).Text(label + ":")
+                    .SemiBold()
+                    .FontSize(10);
+                row.RelativeItem().Text(string.IsNullOrWhiteSpace(value) ? "-" : value)
+                    .FontSize(10);
+            });
         }
+
+        void SummaryCard(RowDescriptor row, string title, string value)
+        {
+            row.RelativeItem().Background(Colors.White)
+                .Border(1).BorderColor(Colors.Grey.Lighten2)
+                .Padding(8)
+                .Column(col =>
+                {
+                    col.Item().Text(title)
+                        .FontSize(9)
+                        .FontColor(Colors.Grey.Darken2);
+                    col.Item().Text(value)
+                        .FontSize(12)
+                        .SemiBold()
+                        .FontColor("#A30020");
+                });
+        }
+
+        IContainer HeaderCell(IContainer container) =>
+            container.Background("#A30020")
+                .PaddingVertical(4).PaddingHorizontal(3)
+                .DefaultTextStyle(t => t.FontColor(Colors.White).FontSize(10));
+
+        IContainer DataCell(IContainer container, bool zebra) =>
+            container.PaddingVertical(4).PaddingHorizontal(3)
+                .Background(zebra ? Colors.Grey.Lighten4 : Colors.White)
+                .DefaultTextStyle(t => t.FontSize(9));
     }
 
     // GET: /Shift/ShiftHistory
@@ -501,18 +663,19 @@ public class ShiftController : Controller
         }
 
         // Fetch all shifts with Department info
-        var shifts = _context.Shifts.Include(s => s.Department).ToList();// ✅ Admin sees ALL (even closed)
+        var shifts = _context.Shifts.Include(s => s.Department).ToList();// Admin sees ALL (even closed)
 
-        // Apply search
+        // search
         if (!string.IsNullOrEmpty(searchTerm))
         {
             searchTerm = searchTerm.ToLower();
 
             shifts = shifts.Where(s =>
+                s.Id.ToString().Contains(searchTerm) ||         // search by Shift ID
                 (s.ShiftType != null && s.ShiftType.ToLower().Contains(searchTerm)) ||
                 (s.Location != null && s.Location.ToLower().Contains(searchTerm)) ||
                 (s.SupervisorName != null && s.SupervisorName.ToLower().Contains(searchTerm)) ||
-                  (s.Department != null && s.Department.DepartmentName.ToLower().Contains(searchTerm)) ||
+                (s.Department != null && s.Department.DepartmentName.ToLower().Contains(searchTerm)) ||
                 (s.StartTime.ToString("dddd").ToLower().Contains(searchTerm)) ||
                 (s.StartTime.ToString("f").ToLower().Contains(searchTerm)) ||
                 (s.EndTime.HasValue && s.EndTime.Value.ToString("f").ToLower().Contains(searchTerm)) ||
@@ -520,7 +683,8 @@ public class ShiftController : Controller
             ).ToList();
         }
 
-        // Apply shift type filter
+
+        // shift type filter
         if (!string.IsNullOrEmpty(shiftTypeFilter))
         {
             shifts = shifts.Where(s => s.ShiftType != null && s.ShiftType.Equals(shiftTypeFilter, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -530,9 +694,11 @@ public class ShiftController : Controller
         if (!string.IsNullOrEmpty(statusFilter))
         {
             if (statusFilter == "Claimed")
-                shifts = shifts.Where(s => s.IsClaimed).ToList();
+                shifts = shifts.Where(s => s.IsClaimed && !s.IsClosed).ToList();
             else if (statusFilter == "Unclaimed")
-                shifts = shifts.Where(s => !s.IsClaimed).ToList();
+                shifts = shifts.Where(s => !s.IsClaimed && !s.IsClosed).ToList();
+            else if (statusFilter == "Closed")
+                shifts = shifts.Where(s => s.IsClosed).ToList();
         }
 
         return View("ListAvailableShifts", shifts); //  Reuse existing view for listing
@@ -558,8 +724,27 @@ public class ShiftController : Controller
     [HttpGet]
     public IActionResult AddShift()
     {
-        return View();
+        ViewBag.Departments = _context.Departments.ToList();
+
+        var now = DateTime.Now;
+        // keep only up to minutes 
+        var roundedNow = new DateTime(
+            now.Year, now.Month, now.Day,
+            now.Hour, now.Minute, 0, 0
+        );
+
+        var model = new Shift
+        {
+            StartTime = roundedNow.AddHours(1),
+            EndTime = roundedNow.AddHours(4)
+        };
+
+        return View(model);
     }
+
+
+
+
 
     // POST: /Shift/AddShift
     // Handle form submission to add a new shift
@@ -567,33 +752,64 @@ public class ShiftController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult AddShift(Shift model)
     {
+        // reload departments
+        ViewBag.Departments = _context.Departments.ToList();
+
+        // 1) show validation problems if any
         if (!ModelState.IsValid)
         {
-            return View(model); // Validation error, redisplay form
+            // quick dev helper to see what’s wrong
+            TempData["ErrorMessage"] = string.Join(" | ",
+                ModelState.Values
+                          .SelectMany(v => v.Errors)
+                          .Select(e => e.ErrorMessage));
+
+            return View(model);
         }
+
+
+        // 2) department safety
+        if (!_context.Departments.Any(d => d.DepartmentId == model.DepartmentId))
+        {
+            ModelState.AddModelError("DepartmentId", "Please select a valid department.");
+            return View(model);
+        }
+
 
         // Set default values for new shift
         model.IsClaimed = false;
         model.IsClosed = false;
         model.SupervisorId = "Unassigned";
         model.SupervisorName = "Unassigned";
-        model.TotalManpower = 0; // ✅ ADD THIS LINE!!
+        model.TotalManpower = 0;
+
 
         // Detect shift type based on time
         model.ShiftType = DetectShiftType(model.StartTime);
 
-        if (string.IsNullOrEmpty(model.Notes))
-        {
+        if (string.IsNullOrWhiteSpace(model.Notes))
             model.Notes = "No notes yet.";
+
+        try
+        {
+            _context.Shifts.Add(model);
+            var rows = _context.SaveChanges();      // will throw if DB has an issue
+
+            if (rows > 0)
+                TempData["SuccessMessage"] = $"Shift #{model.Id} created successfully!";
+            else
+                TempData["ErrorMessage"] = "Nothing was saved to the database.";
+        }
+        catch (Exception ex)
+        {
+            // show simple DB error
+            TempData["ErrorMessage"] = "Database error: " + ex.Message;
+            return View(model);
         }
 
-        _context.Shifts.Add(model);
-        _context.SaveChanges();
-
-        TempData["SuccessMessage"] = "Shift created successfully!";
-        return RedirectToAction(nameof(AddShift)); // Redirect back to Add Shift form
+        // GET so refresh doesn't re-POST
+        return RedirectToAction(nameof(AddShift));
     }
-
 
 
 
