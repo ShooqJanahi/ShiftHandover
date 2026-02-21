@@ -52,7 +52,13 @@ main {
     flex: 1 0 auto;
     padding-top: 20px;
     padding-bottom: 80px; /* enough space for footer */
+
 }
+
+    main .container {
+        padding-top: 0px !important; /* reduce white space */
+    }
+
 
 footer {
     flex-shrink: 0;
@@ -78,8 +84,26 @@ footer {
     font-size: 16px; /* optional: bigger font */
 }
 
+/* Logo size on login page */
+.login-logo {
+    max-width: 220px; /* change this number to make it smaller/bigger */
+    width: 100%;
+    height: auto;
+}
 
 
+/* Center and shrink login form */
+.login-container {
+    max-width: 400px; /* smaller width */
+    margin: 0 auto; /* center horizontally */
+    padding: 10px;
+}
+
+/* Make inputs slightly smaller */
+.login-input {
+    height: 38px; /* smaller height */
+    font-size: 15px;
+}
 
 
 
@@ -293,8 +317,13 @@ footer {
 .table-responsive {
     width: 100%;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
 }
+
+    /* force table to be wider, so it scrolls on small screens */
+    .table-responsive table {
+        min-width: 1000px; /* adjust as you like */
+    }
 
 
 .nav-link.active {
@@ -311,7 +340,7 @@ footer {
 }
 
 .well {
-    background-color: #f8f9fa; /* Light grey background */
+    background-color: #e6e6e6; /* medium grey card */
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 30px;
@@ -326,3 +355,10 @@ footer {
 }
 
 
+
+.users-divider {
+    border: 0; /* remove default border */
+    border-top: 2px solid #ccc; /* visible grey line */
+    margin: 1.5rem 0; /* some space above & below */
+    width: 100%;
+}
