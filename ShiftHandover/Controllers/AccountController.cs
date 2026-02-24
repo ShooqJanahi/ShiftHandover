@@ -114,6 +114,11 @@ public class AccountController : Controller
         return View(model);
     }
 
+
+    
+
+
+
     // Handles user logout
     public async Task<IActionResult> Logout()
     {
